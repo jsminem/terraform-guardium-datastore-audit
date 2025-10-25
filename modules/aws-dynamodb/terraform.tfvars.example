@@ -1,0 +1,50 @@
+# Example Terraform Variables for DynamoDB Module
+# Copy this file to terraform.tfvars and modify as needed
+
+# AWS Configuration
+aws_region = "us-east-1"  # The AWS region where your DynamoDB tables are located
+
+# Resource Naming
+# IMPORTANT: Use a unique name_prefix to avoid naming conflicts with other deployments
+name_prefix = "example-dynamo-test"  # Prefix for all resources created by this module (must be unique)
+
+# AWS Credential in Guardium
+udc_aws_credential = "example_aws"  # Name of the AWS credential stored in Guardium Central Manager
+
+# CloudTrail Configuration
+create_cloudtrail_s3_bucket = true  # Whether to create a new S3 bucket for CloudTrail logs
+
+# Use these settings to use existing CloudTrail and CloudWatch Log Group
+# Uncomment and configure to use existing resources
+# existing_cloudtrail_name = "your-existing-cloudtrail"  # If provided, the module will use this existing CloudTrail
+# existing_cloudwatch_log_group_name = "/aws/cloudtrail/your-existing-log-group"  # If provided, the module will use this existing CloudWatch Log Group
+
+# No replacement needed - removing these variables
+
+# Universal Connector Configuration
+enable_universal_connector = true  # Whether to enable the Universal Connector for monitoring
+csv_start_position = "end"  # Start position for log processing ("start" to process all logs or "end" to process only new logs)
+csv_interval = 60  # Polling interval in seconds for the Universal Connector
+csv_event_filter = ""  # Optional filter for CloudWatch events (e.g., "eventName = 'PutItem'")
+csv_description = "DynamoDB Monitoring"  # Description for the Universal Connector profile
+csv_cluster_name = "default"  # Cluster name for the Universal Connector
+
+# Guardium Integration Configuration
+gdp_server = "guardium.example.com"  # Hostname or IP address of your Guardium Central Manager
+gdp_ssh_username = "user"  # SSH username for connecting to Guardium server
+gdp_ssh_privatekeypath = "/path/to/private/key"  # Path to SSH private key for Guardium server
+gdp_username = "username"  # Username for Guardium web interface authentication
+gdp_password = "changeme"  # Password for Guardium web interface authentication
+gdp_mu_host = "mu-guardium.example.com"  # Hostname or IP address of your Guardium Managed Unit
+gdp_client_id = "client-id"  # Client ID for Guardium OAuth authentication
+gdp_client_secret = "example-client-secret"  # Client secret for Guardium OAuth authentication
+
+# Tags
+tags = {
+  Environment = "dev"
+  Project     = "dynamodb-monitoring"
+}
+
+# DynamoDB Configuration
+dynamodb_tables = "dynamo-table-1,dynamo-table-2"  # Comma-separated list of DynamoDB tables to monitor (or "all" for all tables)
+

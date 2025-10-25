@@ -1,0 +1,110 @@
+# AWS PostgreSQL RDS Session-Level Audit Configuration
+
+This module configures session-level auditing for PostgreSQL RDS instances using the pgAudit extension. It enables comprehensive monitoring of all database activity by capturing SQL statements at the session level.
+
+## Overview
+
+Session-level auditing in PostgreSQL provides broad coverage of database activity. This module:
+
+1. Configures pgAudit to log all SQL statements (except miscellaneous commands)
+2. Sets up either SQS or CloudWatch for log collection
+3. Configures Guardium Universal Connector to process these logs
+
+## How It Works
+
+The module uses PostgreSQL's pgAudit extension with session-level auditing mode. In this mode:
+
+- pgAudit is configured to log all SQL statements (except miscellaneous commands)
+- All database activity is captured regardless of which user or role performs it
+- Logs are sent to either SQS or CloudWatch
+- Guardium Universal Connector processes these logs
+
+This approach provides comprehensive coverage of database activity, ensuring that all relevant operations are captured for security and compliance purposes.
+
+## Usage
+
+```hcl
+module "postgresql_session_audit" {
+  source = "../../modules/datastore-audit-config/aws-postgresql-rds-session"
+
+  # AWS configuration
+  aws_region = "us-east-1"
+  postgres_rds_cluster_identifier = "my-postgres-db"
+  
+  # Guardium configuration
+  udc_aws_credential = "aws-credential-name"
+  gdp_client_secret = "client-secret"
+  gdp_client_id = "client-id"
+  gdp_server = "guardium.example.com"
+  gdp_username = "guardium-user"
+  gdp_password = "guardium-password"
+  gdp_ssh_username = "guardium-ssh-user"
+  gdp_ssh_privatekeypath = "/path/to/private/key"
+  
+  # Log export configuration
+  log_export_type = "Cloudwatch"  # or "SQS"
+}
+```
+
+## Required Variables
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| udc_aws_credential | Name of AWS credential defined in Guardium | string | - |
+| gdp_client_secret | Client secret from output of grdapi register_oauth_client | string | - |
+| gdp_client_id | Client id used when running grdapi register_oauth_client | string | - |
+| gdp_server | Hostname/IP address of Guardium Central Manager | string | - |
+| gdp_username | Username of Guardium Web UI user | string | - |
+| gdp_password | Password of Guardium Web UI user | string | - |
+| gdp_ssh_username | Guardium OS user with SSH access | string | - |
+| gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS with ssh username | string | - |
+
+## Optional Variables
+
+| Name | Description | Type | Default |
+|------|-------------|------|---------|
+| aws_region | AWS region where the RDS instance is located | string | "us-east-1" |
+| postgres_rds_cluster_identifier | RDS PostgreSQL cluster identifier | string | "guardium-postgres" |
+| force_failover | Whether to force failover during parameter group update | bool | true |
+| udc_name | Name for universal connector | string | "rds-postgres-session" |
+| gdp_port | Port of Guardium Central Manager | string | "8443" |
+| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | string | "" |
+| enable_universal_connector | Whether to enable the universal connector module | bool | true |
+| csv_start_position | Start position for UDC | string | "end" |
+| csv_interval | Polling interval for UDC | string | "5" |
+| csv_event_filter | UDC Event filters | string | "" |
+| log_export_type | The type of log exporting to be configured: "SQS" or "Cloudwatch" | string | "object" |
+
+## Audit Log Configuration
+
+This module configures pgAudit to log the following statement classes:
+
+- READ: SELECT, COPY when the source is a relation or a query
+- WRITE: INSERT, UPDATE, DELETE, TRUNCATE, COPY when the destination is a relation
+- FUNCTION: Function calls and DO blocks
+- ROLE: GRANT, REVOKE, CREATE/ALTER/DROP ROLE
+- DDL: All DDL that is not included in the ROLE class
+- MISC: Miscellaneous commands, such as DISCARD, FETCH, CHECKPOINT, VACUUM, SET (excluded by default)
+
+The default configuration logs all statement classes except MISC to reduce noise in the audit logs.
+
+## Dependencies
+
+This module depends on:
+- AWS RDS PostgreSQL instance with pgAudit extension enabled
+- Guardium Data Protection platform
+- AWS credentials configured in Guardium
+
+## Comparison with Object-Level Auditing
+
+Session-level auditing differs from object-level auditing in the following ways:
+
+1. **Coverage**: Session-level auditing captures all SQL statements regardless of which tables they affect, while object-level auditing focuses only on specific tables.
+
+2. **Configuration**: Session-level auditing is simpler to configure as it doesn't require setting up specific grants for tables.
+
+3. **Log Volume**: Session-level auditing typically generates more logs since it captures all database activity.
+
+4. **Use Case**: Session-level auditing is ideal for comprehensive security monitoring and compliance requirements, while object-level auditing is better for focused monitoring of sensitive tables.
+
+Choose session-level auditing when you need comprehensive coverage of all database activity, and object-level auditing when you want to focus on specific tables or operations.
