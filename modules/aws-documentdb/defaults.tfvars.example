@@ -1,0 +1,12 @@
+gdp_server = ""
+gdp_port = "8443"
+gdp_client_secret = ""
+gdp_client_id = ""
+gdp_username = ""
+gdp_password = ""
+gdp_ssh_username = ""
+gdp_ssh_privatekeypath = ""
+enable_universal_connector = true
+udc_aws_credential = ""
+gdp_mu_host = ""
+documentdb_cluster_identifier = ""
