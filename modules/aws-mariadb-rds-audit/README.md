@@ -39,7 +39,7 @@ To ensure Terraform manages your RDS instance correctly:
 
 3. Import your current parameter group:
    ```bash
-    terraform import -var-file="/path/to/terraform.tfvars" module.common_rds-mariadb-parameter-group.aws_db_parameter_group.mariadb_param_group <your-parameter-group-name>
+   terraform import -var-file="/path/to/terraform.tfvars" module.common_rds-mariadb-parameter-group.aws_db_parameter_group.mariadb_param_group <your-parameter-group-name>
    ```
 
 4. Identify your current option group name:
@@ -53,7 +53,7 @@ To ensure Terraform manages your RDS instance correctly:
 
 5. Import the option group into Terraform state:
    ```bash
-    terraform import -var-file="/path/to/terraform.tfvars" module.common_rds-mariadb-parameter-group.aws_db_option_group.audit <your-option-group-name>
+   terraform import -var-file="/path/to/terraform.tfvars" module.common_rds-mariadb-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
 **Note**: Skipping the import steps will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
