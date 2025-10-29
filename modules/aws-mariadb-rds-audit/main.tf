@@ -39,10 +39,4 @@ module "common_rds-postgres-cloudwatch-registration" {
   udc_aws_credential = var.udc_aws_credential
   log_group = local.log_group
   mariadb_rds_cluster_identifier = var.mariadb_rds_cluster_identifier
-  gdp_port = var.gdp_port
-  udc_name = var.udc_name
-  enable_universal_connector = var.enable_universal_connector
-  csv_start_position = var.csv_start_position
-  csv_interval = var.csv_interval
-  csv_event_filter = var.csv_event_filter
 }
