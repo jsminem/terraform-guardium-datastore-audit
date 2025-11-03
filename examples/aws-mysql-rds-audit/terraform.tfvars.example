@@ -1,0 +1,51 @@
+# AWS MySQL RDS with IBM Guardium Data Protection - Terraform Variables
+
+#----------------------------------------
+# General Configuration
+#----------------------------------------
+aws_region = "us-east-1"
+tags = {
+  Environment = "Demo"
+  Owner       = "Security"
+  Project     = "Guardium-Terraform"
+}
+
+#----------------------------------------
+# MySQL RDS Configuration
+#----------------------------------------
+mysql_rds_cluster_identifier = "your-mysql-instance"
+mysql_major_version = "5.7"
+force_failover = false
+
+#----------------------------------------
+# Audit Configuration
+#----------------------------------------
+audit_events = "CONNECT,QUERY"
+audit_file_rotations = "10"
+audit_file_rotate_size = "1000000"
+log_export_type = "Cloudwatch"
+
+#----------------------------------------
+# Universal Connector Configuration
+#----------------------------------------
+enable_universal_connector = true
+udc_name = "mariadb-gdp"
+udc_aws_credential = "guardium-aws"  # Name of the AWS credential stored in Guardium Central Manager
+
+# CSV Configuration
+csv_start_position = "end"
+csv_interval = "5"
+csv_event_filter = ""
+
+#----------------------------------------
+# Guardium Connection Details
+#----------------------------------------
+gdp_server             = "guardium.example.com"  # Replace with your Guardium server
+gdp_port               = 8443
+gdp_username           = "admin"                 # Replace with your Guardium username
+gdp_password           = "password"              # Replace with your Guardium password
+gdp_client_id          = "client4"               # Replace with your client ID
+gdp_client_secret      = "client-secret"         # Replace with your client secret
+gdp_ssh_username       = "root"                  # Replace with your SSH username
+gdp_ssh_privatekeypath = "~/.ssh/id_rsa"         # Replace with your SSH private key path
+gdp_mu_host            = ""                      # Comma separated list of Guardium Managed Units

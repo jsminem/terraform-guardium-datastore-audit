@@ -14,10 +14,10 @@ variable "tags" {
   default     = {}
 }
 
-variable "mariadb_rds_cluster_identifier" {
-  type = string
-  default     = "guardium-mariadb"
-  description = "MariaDB RDS cluster identifier to be monitored"
+variable "mysql_rds_cluster_identifier" {
+  type        = string
+  default     = "guardium-mysql"
+  description = "MySQL RDS cluster identifier to be monitored"
 }
 
 variable "force_failover" {
@@ -26,10 +26,10 @@ variable "force_failover" {
   description = "To failover the database instance, requires multi AZ databases. Results in minimal downtime"
 }
 
-variable "mariadb_major_version" {
+variable "mysql_major_version" {
   type        = string
-  description = "Major version of MariaDB (e.g., '10.6')"
-  default = "10.6"
+  description = "Major version of MySQL ((e.g., '5.7')"
+  default     = "5.7"
 }
 
 variable "audit_events" {

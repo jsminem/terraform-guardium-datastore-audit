@@ -1,13 +1,13 @@
-# AWS MariaDB RDS with IBM Guardium Data Protection
+# AWS MySQL RDS with IBM Guardium Data Protection
 
-This example demonstrates how to configure AWS MariaDB RDS with IBM Guardium Data Protection using audit logging for comprehensive monitoring.
+This example demonstrates how to configure AWS MySQL RDS with IBM Guardium Data Protection using audit logging for comprehensive monitoring.
 
 ## Architecture
 
 ```
 ┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
 │                   │     │                   │     │                   │
-│  AWS MariaDB RDS  │────►│  MariaDB Audit    │────►│  CloudWatch Logs  │
+│  AWS MySQL RDS    │────►│  MariaDB Audit    │────►│  CloudWatch Logs  │
 │  Instance         │     │  Plugin           │     │                   │
 └───────────────────┘     └───────────────────┘     └───────────────────┘
                                                             │
@@ -33,18 +33,18 @@ This example demonstrates how to configure AWS MariaDB RDS with IBM Guardium Dat
 
 ## Data Flow
 
-1. MariaDB RDS database activity is captured by the MariaDB Audit Plugin
+1. MySQL RDS database activity is captured by the MariaDB Audit Plugin
 2. Audit logs are sent to CloudWatch Logs
 3. Guardium Universal Connector reads from CloudWatch Logs
-4. Guardium processes and analyzes the MariaDB activity
-5. Security teams can view and alert on MariaDB activity in Guardium
+4. Guardium processes and analyzes the MySQL activity
+5. Security teams can view and alert on MySQL activity in Guardium
 
 ## Overview
 
 This Terraform configuration:
 
-1. Configures an existing AWS MariaDB RDS instance for audit logging
-2. Sets up a Universal Data Connector in Guardium to collect and analyze MariaDB audit logs from CloudWatch
+1. Configures an existing AWS MySQL RDS instance for audit logging
+2. Sets up a Universal Data Connector in Guardium to collect and analyze MySQL audit logs from CloudWatch
 3. Enables comprehensive monitoring of database operations, user activity, and access patterns
 
 ## Prerequisites
@@ -52,14 +52,14 @@ This Terraform configuration:
 Before using this example, ensure you have:
 
 1. **AWS Resources**:
-   - An existing AWS MariaDB RDS instance
+  - An existing AWS MySQL RDS instance
 
 2. **Guardium Data Protection**:
-   - A running Guardium Data Protection instance
-   - Completed the one-time manual configurations as described in [Preparing Guardium Documentation](../../docs/preparing-guardium.md):
-      - OAuth client registered via `grdapi register_oauth_client`
-      - AWS credentials configured in Guardium Data Protection
-      - SSH access configured for Terraform
+  - A running Guardium Data Protection instance
+  - Completed the one-time manual configurations as described in [Preparing Guardium Documentation](../../docs/preparing-guardium.md):
+    - OAuth client registered via `grdapi register_oauth_client`
+    - AWS credentials configured in Guardium Data Protection
+    - SSH access configured for Terraform
 
 ## Usage
 
@@ -70,8 +70,8 @@ Create a `terraform.tfvars` file with your specific configuration values:
 ```hcl
 # AWS Configuration
 aws_region = "us-east-1"
-mariadb_rds_cluster_identifier = "your-mariadb-instance"
-mariadb_major_version = "10.6"
+mysql_rds_cluster_identifier = "your-mysql-instance"
+mysql_major_version = "5.7"
 
 # Guardium Configuration
 gdp_server = "guardium.example.com"
@@ -101,14 +101,14 @@ tags = {
 terraform init
 ```
 
-### 3. Import the MariaDB Parameter Group and Option Group
+### 3. Import the MySQL Parameter Group and Option Group
 
 Identify existing parameter group name:
 
 ```bash
 # Get current parameter group name
 aws rds describe-db-instances \
-  --db-instance-identifier your-mariadb-instance \
+  --db-instance-identifier your-mysql-instance \
   --region your-region \
   --query "DBInstances[0].DBParameterGroups[0].DBParameterGroupName" \
   --output text
@@ -116,7 +116,7 @@ aws rds describe-db-instances \
 
 Import existing parameter group:
    ```bash
-   terraform import -var-file="/path/to/terraform.tfvars" module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
+   terraform import -var-file="/path/to/terraform.tfvars" module.datastore-audit_aws-mysql-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
    ```
 
 Identify existing option group name:
@@ -124,7 +124,7 @@ Identify existing option group name:
 ```bash
 # Get current option group name
 aws rds describe-db-instances \
-  --db-instance-identifier your-mariadb-instance \
+  --db-instance-identifier your-mysql-instance \
   --region your-region \
   --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
   --output text
@@ -132,7 +132,7 @@ aws rds describe-db-instances \
 
 Import existing option group:
    ```bash
-   terraform import -var-file="/path/to/terraform.tfvars" module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-parameter-group.aws_db_option_group.audit <your-option-group-name>
+   terraform import -var-file="/path/to/terraform.tfvars" module.datastore-audit_aws-mysql-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
 **Note**: Skipping the import steps will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
@@ -151,13 +151,13 @@ After successful application:
 
 1. Log in to your Guardium Data Protection web interface
 2. Navigate to **Universal Connector** → **Datasource Profile Management**
-3. Verify that the MariaDB profile has been created and is active
-4. Navigate to **CloudWatch** → **Log Groups** on the AWS UI and search for `/aws/rds/instance/<mariadb_instance_id>/audit`. You should see log groups created
+3. Verify that the MySQL profile has been created and is active
+4. Navigate to **CloudWatch** → **Log Groups** on the AWS UI and search for `/aws/rds/instance/<mysql_instance_id>/audit`. You should see log groups created
 5. Navigate to the machine unit the UC is deployed on and ensure the STAP status is green/ active.
 
 ## CloudWatch Integration
 
-The module configures MariaDB RDS to send audit logs to CloudWatch Logs. The Universal Connector then:
+The module configures MySQL RDS to send audit logs to CloudWatch Logs. The Universal Connector then:
 
 1. Reads these logs from CloudWatch using the configured AWS credentials
 2. Parses and normalizes the log data
@@ -179,8 +179,8 @@ You can configure which events to audit using the `audit_events` variable:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region where resources will be created | `string` | `"us-east-1"` | no |
-| mariadb_rds_cluster_identifier | MariaDB RDS instance identifier to be monitored | `string` | `"guardium-mariadb"` | no |
-| mariadb_major_version | Major version of MariaDB (e.g., '10.6') | `string` | `"10.6"` | no |
+| mysql_rds_cluster_identifier | MySQL RDS instance identifier to be monitored | `string` | `"guardium-mysql"` | no |
+| mysql_major_version | Major version of MySQL (e.g., '5.7') | `string` | `"5.7"` | no |
 | audit_events | Comma-separated list of events to audit | `string` | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | `string` | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | `string` | `"1000000"` | no |
