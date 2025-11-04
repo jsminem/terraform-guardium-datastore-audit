@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "datastore-audit_aws-mysql-rds-audit" {
-  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-datastore-audit/modules/aws-mysql-rds-audit"
+  source = "../../modules/aws-mysql-rds-audit"
 
   # AWS Configuration
   aws_region                     = var.aws_region

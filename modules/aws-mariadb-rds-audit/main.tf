@@ -6,11 +6,11 @@ locals {
 }
 
 module "common_aws_configuration" {
-  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-common/modules/aws-configuration"
+  source = "IBM/common/guardium//modules/aws-configuration"
 }
 
 module "common_rds-mariadb-mysql-parameter-group" {
- source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-common/modules/rds-mariadb-mysql-parameter-group"
+ source = "IBM/common/guardium//modules/rds-mariadb-mysql-parameter-group"
 
   db_engine = "mariadb"
   rds_cluster_identifier = var.mariadb_rds_cluster_identifier
@@ -25,7 +25,7 @@ module "common_rds-mariadb-mysql-parameter-group" {
 
 module "common_rds-mariadb-mysql-cloudwatch-registration" {
   count  = var.log_export_type == "Cloudwatch" ? 1 : 0
-  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-common/modules/rds-mariadb-mysql-cloudwatch-registration"
+  source = "IBM/common/guardium//modules/aws-configuration/rds-mariadb-mysql-cloudwatch-registration"
 
   db_engine = "mariadb"
   rds_cluster_identifier = var.mariadb_rds_cluster_identifier
