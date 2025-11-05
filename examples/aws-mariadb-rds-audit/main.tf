@@ -22,7 +22,9 @@ module "datastore-audit_aws-mariadb-rds-audit" {
   audit_events                   = var.audit_events
   audit_file_rotations           = var.audit_file_rotations
   audit_file_rotate_size         = var.audit_file_rotate_size
-  exclude_rdsadmin_user          = var.exclude_rdsadmin_user
+  audit_incl_users               = var.audit_incl_users
+  audit_excl_users               = var.audit_excl_users
+  audit_query_log_limit          = var.audit_query_log_limit
   log_export_type                = var.log_export_type
 
   # Guardium Configuration

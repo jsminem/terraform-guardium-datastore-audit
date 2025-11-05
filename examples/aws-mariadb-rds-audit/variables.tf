@@ -59,10 +59,22 @@ variable "audit_file_rotate_size" {
   default     = "1000000"
 }
 
-variable "exclude_rdsadmin_user" {
-  type        = bool
-  description = "Whether to exclude the rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to true to add rdsadmin to SERVER_AUDIT_EXCL_USERS."
-  default     = true
+variable "audit_incl_users" {
+  type        = string
+  description = "Comma-separated list of users to include in audit logs (SERVER_AUDIT_INCL_USERS). If set, only these users will be audited. Leave empty to audit all users."
+  default     = ""
+}
+
+variable "audit_excl_users" {
+  type        = string
+  description = "Comma-separated list of users to exclude from audit logs (SERVER_AUDIT_EXCL_USERS). Example: 'rdsadmin,testuser'. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly."
+  default     = "rdsadmin"
+}
+
+variable "audit_query_log_limit" {
+  type        = string
+  description = "Maximum query length to log in bytes (SERVER_AUDIT_QUERY_LOG_LIMIT). Queries longer than this will be truncated. Default is 1024 bytes."
+  default     = "1024"
 }
 
 //////
