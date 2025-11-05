@@ -69,22 +69,22 @@ Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.e
 
 ### 2. Initialize Terraform
 
-```bash
-terraform init
-```
+  ```bash
+  terraform init
+  ```
 
 ### 3. Import the MySQL Parameter Group and Option Group
 
 Identify existing parameter group name:
 
-```bash
-# Get current parameter group name
-aws rds describe-db-instances \
-  --db-instance-identifier your-mysql-instance \
-  --region your-region \
-  --query "DBInstances[0].DBParameterGroups[0].DBParameterGroupName" \
-  --output text
-```
+  ```bash
+  # Get current parameter group name
+  aws rds describe-db-instances \
+    --db-instance-identifier your-mysql-instance \
+    --region your-region \
+    --query "DBInstances[0].DBParameterGroups[0].DBParameterGroupName" \
+    --output text
+  ```
 
 Import existing parameter group:
    ```bash
@@ -93,14 +93,14 @@ Import existing parameter group:
 
 Identify existing option group name:
 
-```bash
-# Get current option group name
-aws rds describe-db-instances \
-  --db-instance-identifier your-mysql-instance \
-  --region your-region \
-  --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
-  --output text
-```
+  ```bash
+  # Get current option group name
+  aws rds describe-db-instances \
+    --db-instance-identifier your-mysql-instance \
+    --region your-region \
+    --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
+    --output text
+  ```
 
 Import existing option group:
    ```bash
@@ -111,9 +111,9 @@ Import existing option group:
 
 ### 4. Apply the Configuration
 
-```bash
-terraform apply
-```
+  ```bash
+  terraform apply
+  ```
 
 Review the planned changes and type `yes` to apply them.
 

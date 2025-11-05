@@ -27,6 +27,7 @@ To ensure Terraform manages your RDS instance correctly:
    ```bash
    terraform init
    ```
+   
 2. Identify your current parameter group:
    ```bash
    aws rds describe-db-instances \

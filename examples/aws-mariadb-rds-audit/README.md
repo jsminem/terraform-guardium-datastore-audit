@@ -69,51 +69,51 @@ Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.e
 
 ### 2. Initialize Terraform
 
-```bash
-terraform init
-```
+  ```bash
+  terraform init
+  ```
 
 ### 3. Import the MariaDB Parameter Group and Option Group
 
 Identify existing parameter group name:
 
-```bash
-# Get current parameter group name
-aws rds describe-db-instances \
-  --db-instance-identifier your-mariadb-instance \
-  --region your-region \
-  --query "DBInstances[0].DBParameterGroups[0].DBParameterGroupName" \
-  --output text
-```
+  ```bash
+  # Get current parameter group name
+  aws rds describe-db-instances \
+    --db-instance-identifier your-mariadb-instance \
+    --region your-region \
+    --query "DBInstances[0].DBParameterGroups[0].DBParameterGroupName" \
+    --output text
+  ```
 
 Import existing parameter group:
    ```bash
-   terraform import module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
+   terraform import module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
    ```
 
 Identify existing option group name:
 
-```bash
-# Get current option group name
-aws rds describe-db-instances \
-  --db-instance-identifier your-mariadb-instance \
-  --region your-region \
-  --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
-  --output text
-```
+  ```bash
+  # Get current option group name
+  aws rds describe-db-instances \
+    --db-instance-identifier your-mariadb-instance \
+    --region your-region \
+    --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
+    --output text
+  ```
 
 Import existing option group:
    ```bash
-   terraform module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-parameter-group.aws_db_option_group.audit <your-option-group-name>
+   terraform module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
 **Note**: Skipping the import steps will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
 
 ### 4. Apply the Configuration
 
-```bash
-terraform apply
-```
+  ```bash
+  terraform apply
+  ```
 
 Review the planned changes and type `yes` to apply them.
 
