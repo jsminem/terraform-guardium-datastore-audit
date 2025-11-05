@@ -23,6 +23,7 @@ force_failover = false
 audit_events = "CONNECT,QUERY"
 audit_file_rotations = "10"
 audit_file_rotate_size = "1000000"
+exclude_rdsadmin_user = true  # Set to false to include rdsadmin health check queries in audit logs
 log_export_type = "Cloudwatch"
 
 #----------------------------------------

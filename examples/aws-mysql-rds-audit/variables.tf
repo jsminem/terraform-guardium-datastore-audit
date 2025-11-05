@@ -54,6 +54,12 @@ variable "audit_file_rotate_size" {
   default     = "1000000"
 }
 
+variable "exclude_rdsadmin_user" {
+  type        = bool
+  description = "Whether to exclude the rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to true to add rdsadmin to SERVER_AUDIT_EXCL_USERS."
+  default     = true
+}
+
 //////
 // Guardium variables
 //////

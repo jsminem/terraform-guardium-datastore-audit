@@ -28,7 +28,7 @@ variable "force_failover" {
 
 variable "mysql_major_version" {
   type        = string
-  description = "Major version of MySQL ((e.g., '5.7')"
+  description = "Major version of MySQL (e.g., '5.7')"
   default     = "5.7"
 }
 
@@ -48,6 +48,12 @@ variable "audit_file_rotate_size" {
   type        = string
   description = "Size in bytes before rotating audit file"
   default     = "1000000"
+}
+
+variable "exclude_rdsadmin_user" {
+  type        = bool
+  description = "Whether to exclude the rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to true to add rdsadmin to SERVER_AUDIT_EXCL_USERS."
+  default     = true
 }
 
 //////

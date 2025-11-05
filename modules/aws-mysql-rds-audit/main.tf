@@ -10,7 +10,7 @@ module "common_aws_configuration" {
 }
 
 module "common_rds-mariadb-mysql-parameter-group" {
- source = "IBM/common/guardium//modules/rds-mariadb-mysql-parameter-group"
+  source = "IBM/common/guardium//modules/rds-mariadb-mysql-parameter-group"
 
   db_engine = "mysql"
   rds_cluster_identifier = var.mysql_rds_cluster_identifier
@@ -18,6 +18,7 @@ module "common_rds-mariadb-mysql-parameter-group" {
   audit_events = var.audit_events
   audit_file_rotations = var.audit_file_rotations
   audit_file_rotate_size = var.audit_file_rotate_size
+  exclude_rdsadmin_user = var.exclude_rdsadmin_user
   force_failover = var.force_failover
   aws_region = var.aws_region
   tags = var.tags

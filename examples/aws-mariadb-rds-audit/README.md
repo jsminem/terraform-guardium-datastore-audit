@@ -65,35 +65,7 @@ Before using this example, ensure you have:
 
 ### 1. Create a terraform.tfvars File
 
-Create a `terraform.tfvars` file with your specific configuration values:
-
-```hcl
-# AWS Configuration
-aws_region = "us-east-1"
-mariadb_rds_cluster_identifier = "your-mariadb-instance"
-mariadb_major_version = "10.6"
-
-# Guardium Configuration
-gdp_server = "guardium.example.com"
-gdp_username = "guardium-user"
-gdp_password = "guardium-password"
-gdp_ssh_username = "guardium-ssh-user"
-gdp_ssh_privatekeypath = "/path/to/private/key"
-gdp_client_id = "client1"
-gdp_client_secret = "client-secret-value"
-udc_aws_credential = "aws-credential-name"
-gdp_mu_host = "mu1,mu2"
-
-# Audit Configuration
-audit_events = "CONNECT,QUERY"
-log_export_type = "Cloudwatch"
-
-# Resource Tags
-tags = {
-  Environment = "Production"
-  Owner       = "Security Team"
-}
-```
+Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
 
 ### 2. Initialize Terraform
 
@@ -184,6 +156,7 @@ You can configure which events to audit using the `audit_events` variable:
 | audit_events | Comma-separated list of events to audit | `string` | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | `string` | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | `string` | `"1000000"` | no |
+| exclude_rdsadmin_user | Whether to exclude rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to false to include rdsadmin activity. | `bool` | `true` | no |
 | udc_name | Name for universal connector (used for AWS objects) | `string` | `"mariadb-gdp"` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a | yes |
 | gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a | yes |

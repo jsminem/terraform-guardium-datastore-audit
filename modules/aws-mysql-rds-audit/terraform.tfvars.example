@@ -87,6 +87,9 @@ audit_events = "CONNECT,QUERY"
 # Optional: Size in bytes before rotating audit file (default: 1000000)
 # audit_file_rotate_size = "1000000"
 
+# Optional: Set to false to include rdsadmin health check queries in audit logs
+exclude_rdsadmin_user = true
+
 #------------------------------------------------------------------------------
 # Universal Connector Configuration
 #------------------------------------------------------------------------------

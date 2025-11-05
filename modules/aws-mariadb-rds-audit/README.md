@@ -1,6 +1,6 @@
 # AWS MariaDB RDS Audit Configuration
 
-This module configures audit logging for MariaDB RDS instances using Guardium. It enables the MariaDB Audit Plugin through an option group and configures log collection via CloudWatch.
+This module configures audit logging for MariaDB RDS instances with IBM Guardium Data Protection. It enables the MariaDB Audit Plugin through an option group and configures log collection via CloudWatch.
 
 ## Prerequisites
 
@@ -53,7 +53,7 @@ To ensure Terraform manages your RDS instance correctly:
 
 5. Import your current parameter group:
    ```bash
-   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.mariadb_param_group <your-parameter-group-name>
+   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
    ```
 
 **Note**: Skipping the import step will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
@@ -68,25 +68,7 @@ To ensure Terraform manages your RDS instance correctly:
 
 ### Using a `tfvars` File
 
-Create a `defaults.tfvars` file with your configuration:
-
-```hcl
-aws_region = "us-east-1"
-mariadb_rds_cluster_identifier = "your-mariadb-instance"
-mariadb_major_version = "10.6"
-
-udc_aws_credential = "aws-credential-name"
-gdp_client_secret = "client-secret"
-gdp_client_id = "client-id"
-gdp_server = "guardium-server.example.com"
-gdp_username = "guardium-user"
-gdp_password = "guardium-password"
-gdp_ssh_username = "guardium-ssh-user"
-gdp_ssh_privatekeypath = "/path/to/private/key"
-
-log_export_type = "Cloudwatch"
-audit_events = "CONNECT,QUERY"
-```
+Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
 
 Then run:
 
@@ -166,6 +148,7 @@ Guardium is configured to collect and analyze these logs.
 | audit_events | Comma-separated list of events to audit | string | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | string | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | string | `"1000000"` | no |
+| exclude_rdsadmin_user | Whether to exclude rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to false to include rdsadmin activity. | bool | `true` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | string | n/a | yes |
 | gdp_client_secret | Client secret from Guardium | string | n/a | yes |
 | gdp_client_id | Client ID from Guardium | string | n/a | yes |
@@ -184,7 +167,3 @@ Guardium is configured to collect and analyze these logs.
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |
 | csv_event_filter | UDC Event filters | string | `""` | no |
-
-## Outputs
-
-This module does not provide any outputs.

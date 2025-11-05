@@ -1,6 +1,6 @@
 # AWS MySQL RDS Audit Configuration
 
-This module configures audit logging for MySQL RDS instances using Guardium. It enables the MariaDB Audit Plugin through an option group and configures log collection via CloudWatch.
+This module configures audit logging for MySQL RDS instances with IBM Guardium Data Protection. It enables the MariaDB Audit Plugin through an option group and configures log collection via CloudWatch.
 
 ## Prerequisites
 
@@ -51,9 +51,9 @@ To ensure Terraform manages your RDS instance correctly:
    --output text
    ```
 
-5. If using a custom parameter group, import it as well:
+5. Import your current parameter group:
    ```bash
-   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.mysql_param_group <your-parameter-group-name>
+   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
    ```
 
 **Note**: Skipping the import step will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
@@ -68,50 +68,12 @@ To ensure Terraform manages your RDS instance correctly:
 
 ### Using a tfvars File
 
-Create a `defaults.tfvars` file with your configuration:
-
-```hcl
-# AWS Configuration
-aws_region = "us-east-1"
-mysql_rds_cluster_identifier = "your-mysql-instance"
-mysql_major_version = "5.7"
-
-# Guardium Configuration
-udc_aws_credential = "aws-credential-name"
-gdp_client_secret = "client-secret"
-gdp_client_id = "client-id"
-gdp_server = "guardium-server.example.com"
-gdp_port = "8443"  # Optional, defaults to 8443
-gdp_username = "guardium-user"
-gdp_password = "guardium-password"
-gdp_ssh_username = "guardium-ssh-user"
-gdp_ssh_privatekeypath = "/path/to/private/key"
-gdp_mu_host = "mu1,mu2"  # Optional, comma-separated list of managed units
-
-# Audit Configuration
-log_export_type = "Cloudwatch"
-audit_events = "CONNECT,QUERY"
-audit_file_rotations = "10"  # Optional
-audit_file_rotate_size = "1000000"  # Optional
-
-# Universal Connector Configuration
-udc_name = "mysql-gdp"  # Optional, defaults to "mariadb-gdp"
-enable_universal_connector = true  # Optional, defaults to true
-csv_start_position = "end"  # Optional, defaults to "end"
-csv_interval = "5"  # Optional, defaults to "5"
-csv_event_filter = ""  # Optional, defaults to ""
-
-# Resource Tags
-tags = {
-  Environment = "Production"
-  Owner       = "Database Team"
-}
-```
+Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
 
 Then run:
 
 ```bash
-# Import existing resources (if needed)
+# Import existing resources (required)
 # See the "Option Group and Parameter Group Import Process" section above
 
 # Plan the changes
@@ -176,15 +138,6 @@ This module configures CloudWatch integration for MySQL RDS auditing. The audit 
 
 Guardium is configured to collect and analyze these logs.
 
-## Universal Connector Control
-
-You can control the Universal Connector behavior with these variables:
-
-- `enable_universal_connector`: Set to false to disable the universal connector (default: true)
-- `csv_start_position`: Start position for UDC (default: "end")
-- `csv_interval`: Polling interval for UDC in seconds (default: "5")
-- `csv_event_filter`: UDC Event filters (default: "")
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -195,6 +148,7 @@ You can control the Universal Connector behavior with these variables:
 | audit_events | Comma-separated list of events to audit | string | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | string | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | string | `"1000000"` | no |
+| exclude_rdsadmin_user | Whether to exclude rdsadmin user from audit logs. The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly and result in unnecessary data processing. Set to false to include rdsadmin activity. | bool | `true` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | string | n/a | yes |
 | gdp_client_secret | Client secret from Guardium | string | n/a | yes |
 | gdp_client_id | Client ID from Guardium | string | n/a | yes |
@@ -213,7 +167,3 @@ You can control the Universal Connector behavior with these variables:
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |
 | csv_event_filter | UDC Event filters | string | `""` | no |
-
-## Outputs
-
-This module does not provide any outputs.

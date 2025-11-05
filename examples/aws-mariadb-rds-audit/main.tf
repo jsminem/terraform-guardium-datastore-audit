@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "datastore-audit_aws-mariadb-rds-audit" {
-  source = "../../modules/aws-mariadb-rds-audit"
+  source = "IBM/datastore-audit/guardium//modules/aws-mariadb-rds-audit"
 
   # AWS Configuration
   aws_region                     = var.aws_region
@@ -17,6 +17,7 @@ module "datastore-audit_aws-mariadb-rds-audit" {
   audit_events                   = var.audit_events
   audit_file_rotations           = var.audit_file_rotations
   audit_file_rotate_size         = var.audit_file_rotate_size
+  exclude_rdsadmin_user          = var.exclude_rdsadmin_user
   log_export_type                = var.log_export_type
 
   # Guardium Configuration

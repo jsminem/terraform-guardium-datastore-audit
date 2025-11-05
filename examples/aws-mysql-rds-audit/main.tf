@@ -17,6 +17,7 @@ module "datastore-audit_aws-mysql-rds-audit" {
   audit_events                   = var.audit_events
   audit_file_rotations           = var.audit_file_rotations
   audit_file_rotate_size         = var.audit_file_rotate_size
+  exclude_rdsadmin_user          = var.exclude_rdsadmin_user
   log_export_type                = var.log_export_type
 
   # Guardium Configuration
