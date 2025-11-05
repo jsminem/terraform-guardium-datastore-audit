@@ -27,22 +27,7 @@ To ensure Terraform manages your RDS instance correctly:
    ```bash
    terraform init
    ```
-
-2. Identify your current option group name:
-   ```bash
-   aws rds describe-db-instances \
-     --db-instance-identifier your-mysql-instance \
-     --region your-region \
-     --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
-     --output text
-   ```
-
-3. Import the option group into Terraform state:
-   ```bash
-   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
-   ```
-
-4. Identify your current parameter group:
+2. Identify your current parameter group:
    ```bash
    aws rds describe-db-instances \
    --db-instance-identifier your-mysql-instance \
@@ -51,9 +36,23 @@ To ensure Terraform manages your RDS instance correctly:
    --output text
    ```
 
-5. Import your current parameter group:
+3. Import your current parameter group:
    ```bash
    terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_parameter_group.db_param_group <your-parameter-group-name>
+   ```
+   
+4. Identify your current option group name:
+   ```bash
+   aws rds describe-db-instances \
+     --db-instance-identifier your-mysql-instance \
+     --region your-region \
+     --query "DBInstances[0].OptionGroupMemberships[0].OptionGroupName" \
+     --output text
+   ```
+
+5. Import the option group into Terraform state:
+   ```bash
+   terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
 **Note**: Skipping the import step will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
