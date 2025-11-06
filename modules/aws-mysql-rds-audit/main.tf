@@ -6,11 +6,11 @@
 locals {
   udc_name = format("%s%s-%s", var.aws_region, var.mysql_rds_cluster_identifier, local.aws_account_id)
   aws_region     = var.aws_region
-  aws_account_id = module.common_aws_configuration.aws_account_id
+  aws_account_id = module.common_aws-configuration.aws_account_id
   log_group = format("/aws/rds/instance/%s/audit", var.mysql_rds_cluster_identifier)
 }
 
-module "common_aws_configuration" {
+module "common_aws-configuration" {
   source = "IBM/common/guardium//modules/aws-configuration"
 }
 
@@ -33,7 +33,7 @@ module "common_rds-mariadb-mysql-parameter-group" {
 
 module "common_rds-mariadb-mysql-cloudwatch-registration" {
   count  = var.log_export_type == "Cloudwatch" ? 1 : 0
-  source = "IBM/common/guardium//modules/aws-configuration/rds-mariadb-mysql-cloudwatch-registration"
+ source = "IBM/common/guardium//modules/rds-mariadb-mysql-cloudwatch-registration"
 
   db_engine = "mysql"
   rds_cluster_identifier = var.mysql_rds_cluster_identifier
