@@ -23,15 +23,15 @@ The following diagram illustrates how this module orchestrates the configuration
         │                                                           │
         │              AWS Datastore Configuration                  │
         │                                                           │
-        │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐ │
-        │  │  DynamoDB   │  │  DocumentDB  │  │  MariaDB RDS    │ │
-        │  │  + CloudTrail│  │  + Audit Logs│  │  + Audit Plugin │ │
-        │  └─────────────┘  └──────────────┘  └─────────────────┘ │
+        │  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
+        │  │  DynamoDB   │  │  DocumentDB  │  │  MariaDB RDS    │   │
+        │  │ + CloudTrail│  │  + Audit Logs│  │  + Audit Plugin │   │
+        │  └─────────────┘  └──────────────┘  └─────────────────┘   │
         │                                                           │
-        │  ┌─────────────────┐  ┌────────────────────────────┐    │
-        │  │  MySQL RDS      │  │  PostgreSQL RDS            │    │
-        │  │  + Audit Plugin │  │  + pgAudit (Object/Session)│    │
-        │  └─────────────────┘  └────────────────────────────┘    │
+        │  ┌─────────────────┐  ┌────────────────────────────┐      │
+        │  │  MySQL RDS      │  │  PostgreSQL RDS            │      │
+        │  │  + Audit Plugin │  │  + pgAudit (Object/Session)│      │
+        │  └─────────────────┘  └────────────────────────────┘      │
         │                                                           │
         │  ┌──────────────────────────────────────────────────┐    │
         │  │  Redshift                                        │    │
@@ -46,10 +46,10 @@ The following diagram illustrates how this module orchestrates the configuration
         │                                                           │
         │              AWS Log Aggregation Layer                    │
         │                                                           │
-        │  ┌─────────────────┐         ┌──────────────────────┐   │
-        │  │  CloudWatch     │         │  S3 Buckets          │   │
-        │  │  Log Groups     │         │  (CloudTrail Logs)   │   │
-        │  └─────────────────┘         └──────────────────────┘   │
+        │  ┌─────────────────┐         ┌──────────────────────┐     │
+        │  │  CloudWatch     │         │  S3 Buckets          │     │
+        │  │  Log Groups     │         │  (CloudTrail Logs)   │     │
+        │  └─────────────────┘         └──────────────────────┘     │
         │                                                           │
         └───────────────────────────────────────────────────────────┘
                                         │
