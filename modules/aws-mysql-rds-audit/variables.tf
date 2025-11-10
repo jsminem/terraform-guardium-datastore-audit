@@ -79,7 +79,7 @@ variable "audit_query_log_limit" {
 variable "udc_name" {
   type        = string
   description = "Name for universal connector. Is used for all aws objects"
-  default     = "mariadb-gdp"
+  default     = "mysql-gdp"
 }
 
 

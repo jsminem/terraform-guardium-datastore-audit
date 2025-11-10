@@ -32,7 +32,7 @@ log_export_type = "Cloudwatch"
 # Universal Connector Configuration
 #----------------------------------------
 enable_universal_connector = true
-udc_name = "mariadb-gdp"
+udc_name = "mysql-gdp"
 udc_aws_credential = "guardium-aws"  # Name of the AWS credential stored in Guardium Central Manager
 
 # CSV Configuration
