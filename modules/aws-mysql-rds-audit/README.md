@@ -169,3 +169,16 @@ Guardium is configured to collect and analyze these logs.
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |
 | csv_event_filter | UDC Event filters | string | `""` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| udc_name | Name of the Universal Connector |
+| cloudwatch_log_group | Name of the CloudWatch Log Group for audit logs |
+| parameter_group_name | Name of the RDS parameter group |
+| option_group_name | Name of the RDS option group with audit plugin |
+| aws_region | AWS region where resources are deployed |
+| aws_account_id | AWS account ID |
+| rds_cluster_identifier | RDS cluster identifier |
+| log_export_type | Type of log export |
