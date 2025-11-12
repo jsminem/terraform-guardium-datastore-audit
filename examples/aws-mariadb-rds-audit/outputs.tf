@@ -41,6 +41,6 @@ output "rds_cluster_identifier" {
 }
 
 output "log_export_type" {
-  description = "Type of log export (Cloudwatch or S3)"
+  description = "Type of log export"
   value       = module.datastore-audit_aws-mariadb-rds-audit.log_export_type
 }

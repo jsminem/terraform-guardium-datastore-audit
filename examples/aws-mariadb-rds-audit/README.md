@@ -189,4 +189,4 @@ You can configure which events to audit using the `audit_events` variable:
 | aws_region | AWS region where resources are deployed |
 | aws_account_id | AWS account ID |
 | rds_cluster_identifier | RDS cluster identifier |
-| log_export_type | Type of log export (Cloudwatch or S3) |
+| log_export_type | Type of log export |
