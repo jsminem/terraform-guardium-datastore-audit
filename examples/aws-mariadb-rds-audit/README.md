@@ -104,7 +104,7 @@ Identify existing option group name:
 
 Import existing option group:
    ```bash
-   terraform module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
+   terraform import module.datastore-audit_aws-mariadb-rds-audit.module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
 **Note**: Skipping the import steps will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
