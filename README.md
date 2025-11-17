@@ -33,10 +33,10 @@ The following diagram illustrates how this module orchestrates the configuration
         │  │  + Audit Plugin │  │  + pgAudit (Object/Session)│      │
         │  └─────────────────┘  └────────────────────────────┘      │
         │                                                           │
-        │  ┌──────────────────────────────────────────────────┐    │
-        │  │  Redshift                                        │    │
-        │  │  + Connection & User Activity Logs               │    │
-        │  └──────────────────────────────────────────────────┘    │
+        │  ┌──────────────────────────────────────────────────┐     │
+        │  │  Redshift                                        │     │
+        │  │  + Connection & User Activity Logs               │     │
+        │  └──────────────────────────────────────────────────┘     │
         │                                                           │
         └───────────────────────────────────────────────────────────┘
                                         │
