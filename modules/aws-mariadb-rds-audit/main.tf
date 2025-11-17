@@ -55,4 +55,7 @@ module "common_rds-mariadb-mysql-cloudwatch-registration" {
   csv_start_position = var.csv_start_position
   csv_interval = var.csv_interval
   csv_event_filter = var.csv_event_filter
+  codec_pattern = var.codec_pattern
+  cloudwatch_endpoint = var.cloudwatch_endpoint
+  use_aws_bundled_ca = var.use_aws_bundled_ca
 }

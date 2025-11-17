@@ -174,3 +174,21 @@ variable "log_export_type" {
   }
 }
 
+variable "codec_pattern" {
+  type = string
+  description = "Codec pattern for RDS MariaDB CloudWatch logs"
+  default = "plain"
+}
+
+variable "cloudwatch_endpoint" {
+  type = string
+  description = "Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint"
+  default = ""
+}
+
+variable "use_aws_bundled_ca" {
+  type = bool
+  description = "Whether to use the AWS bundled CA certificates for CloudWatch connection"
+  default = true
+}
+
