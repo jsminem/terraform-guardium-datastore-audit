@@ -1,0 +1,90 @@
+###############################################################################
+# AWS Neptune Audit Configuration - Terraform Variables
+###############################################################################
+
+#------------------------------------------------------------------------------
+# AWS Configuration
+#------------------------------------------------------------------------------
+
+# AWS region where the Neptune cluster is located
+aws_region = "us-east-1"
+
+# The identifier of the Neptune cluster to be monitored
+neptune_cluster_identifier = "your-neptune-cluster"
+
+# Optional: Add tags to resources created by this module
+# tags = {
+#   Environment = "Production"
+#   Project     = "Database Security"
+#   Owner       = "Security Team"
+# }
+
+#------------------------------------------------------------------------------
+# Guardium Data Protection (GDP) Configuration
+#------------------------------------------------------------------------------
+
+# Name of the AWS credential defined in Guardium
+# This credential must have permissions to access CloudWatch logs
+udc_aws_credential = "aws-credential-name"
+
+# Client secret from output of grdapi register_oauth_client command
+gdp_client_secret = "client-secret"
+
+# Client ID used when running grdapi register_oauth_client
+gdp_client_id = "client-id"
+
+# Hostname or IP address of the Guardium Central Manager
+gdp_server = "guardium-server.example.com"
+
+# Optional: Port of Guardium Central Manager (default: 8443)
+# gdp_port = "8443"
+
+# Username for Guardium Web UI access
+gdp_username = "guardium-user"
+
+# Password for Guardium Web UI access
+gdp_password = "guardium-password"
+
+# Guardium OS user with SSH access
+gdp_ssh_username = "guardium-ssh-user"
+
+# Path to the private SSH key for connecting to Guardium OS
+gdp_ssh_privatekeypath = "/path/to/private/key"
+
+# Optional: Comma-separated list of Guardium Managed Units to deploy profile
+# Leave empty to use the default Managed Unit
+# gdp_mu_host = ""
+
+#------------------------------------------------------------------------------
+# Universal Connector Configuration
+#------------------------------------------------------------------------------
+
+# Optional: Whether to enable the universal connector (default: true)
+# Set to false to completely disable the universal connector
+# enable_universal_connector = true
+
+# Optional: Start position for Universal Data Connector (default: end)
+# Options: "start" (beginning of logs) or "end" (only new logs)
+# csv_start_position = "end"
+
+# Optional: Polling interval in seconds for Universal Data Connector (default: 5)
+# csv_interval = "5"
+
+# Optional: Event filters for Universal Data Connector
+# csv_event_filter = ""
+
+#------------------------------------------------------------------------------
+# SFTP and Multipart Upload Configuration
+#------------------------------------------------------------------------------
+
+# Optional: Directory path for SFTP upload (chroot path for CLI user)
+# This is the directory where CSV files are uploaded via SFTP
+# profile_upload_directory = "/upload"
+
+# Optional: Full filesystem path for Guardium API to read CSV files
+# This is the actual filesystem path where Guardium reads the uploaded files
+# profile_api_directory = "/var/IBM/Guardium/file-server/upload"
+
+# Optional: Whether to use multipart upload for CSV files (default: false)
+# Enable this for large CSV files to improve upload reliability
+# use_multipart_upload = false
