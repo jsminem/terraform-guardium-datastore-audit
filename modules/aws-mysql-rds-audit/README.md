@@ -16,7 +16,7 @@ Before using this module, you need to:
 |------|---------|
 | terraform | >= 1.0.0 |
 | aws | >= 4.0.0 |
-| guardium-data-protection | >= 0.0.4 |
+| guardium-data-protection | >= 1.0.0 |
 
 ### Option Group and Parameter Group Import Process
 
@@ -164,7 +164,7 @@ Guardium is configured to collect and analyze these logs.
 | log_export_type | Log export type (Cloudwatch) | string | `"Cloudwatch"` | no |
 | force_failover | Whether to force failover during option group update | bool | `false` | no |
 | tags | Map of tags to apply to resources | map(string) | `{}` | no |
-| udc_name | Name for universal connector | string | `"mariadb-gdp"` | no |
+| udc_name | Name for universal connector | string | `"mysql-gdp"` | no |
 | enable_universal_connector | Whether to enable the universal connector | bool | `true` | no |
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |

@@ -112,7 +112,7 @@ Import existing option group:
 ### 4. Apply the Configuration
 
   ```bash
-  terraform apply
+  terraform apply -var-file=defaults.tfvars
   ```
 
 Review the planned changes and type `yes` to apply them.
@@ -125,7 +125,7 @@ After successful application:
 2. Navigate to **Universal Connector** → **Datasource Profile Management**
 3. Verify that the MariaDB profile has been created and is active
 4. Navigate to **CloudWatch** → **Log Groups** on the AWS UI and search for `/aws/rds/instance/<mariadb_instance_id>/audit`. You should see log groups created
-5. Navigate to the machine unit the UC is deployed on and ensure the STAP status is green/ active.
+5. Navigate to the machine unit the UC is deployed on and ensure the STAP status is green/active
 
 ## CloudWatch Integration
 
@@ -148,35 +148,35 @@ You can configure which events to audit using the `audit_events` variable:
 
 ## Input Variables
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| aws_region | AWS region where resources will be created | `string` | `"us-east-1"` | no |
+| Name | Description | Type | Default              | Required |
+|------|-------------|------|----------------------|:--------:|
+| aws_region | AWS region where resources will be created | `string` | `"us-east-1"`        | no |
 | mariadb_rds_cluster_identifier | MariaDB RDS instance identifier to be monitored | `string` | `"guardium-mariadb"` | no |
-| mariadb_major_version | Major version of MariaDB (e.g., '10.6') | `string` | `"10.6"` | no |
-| audit_events | Comma-separated list of events to audit | `string` | `"CONNECT,QUERY"` | no |
-| audit_file_rotations | Number of audit file rotations to keep | `string` | `"10"` | no |
-| audit_file_rotate_size | Size in bytes before rotating audit file | `string` | `"1000000"` | no |
-| audit_incl_users | Comma-separated list of users to include in audit logs (SERVER_AUDIT_INCL_USERS). If set, only these users will be audited. Leave empty to audit all users. | `string` | `""` | no |
-| audit_excl_users | Comma-separated list of users to exclude from audit logs (SERVER_AUDIT_EXCL_USERS). The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly. | `string` | `"rdsadmin"` | no |
-| audit_query_log_limit | Maximum query length to log in bytes (SERVER_AUDIT_QUERY_LOG_LIMIT). Queries longer than this will be truncated. | `string` | `"1024"` | no |
-| udc_name | Name for universal connector (used for AWS objects) | `string` | `"mariadb-gdp"` | no |
-| udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a | yes |
-| gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a | yes |
-| gdp_client_secret | Client secret from output of grdapi register_oauth_client | `string` | n/a | yes |
-| gdp_server | Hostname/IP address of Guardium Central Manager | `string` | n/a | yes |
-| gdp_port | Port of Guardium Central Manager | `string` | `"8443"` | no |
-| gdp_username | Username of Guardium Web UI user | `string` | n/a | yes |
-| gdp_password | Password of Guardium Web UI user | `string` | n/a | yes |
-| gdp_ssh_username | Guardium OS user with SSH access | `string` | n/a | yes |
-| gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS | `string` | n/a | yes |
-| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | `string` | `""` | no |
-| log_export_type | Type of log export (Cloudwatch) | `string` | `"Cloudwatch"` | no |
-| force_failover | Whether to force failover during parameter group update | `bool` | `false` | no |
-| enable_universal_connector | Whether to enable the universal connector | `bool` | `true` | no |
-| csv_start_position | Start position for UDC | `string` | `"end"` | no |
-| csv_interval | Polling interval for UDC | `string` | `"5"` | no |
-| csv_event_filter | UDC Event filters | `string` | `""` | no |
-| tags | Map of tags to apply to resources | `map(string)` | `{}` | no |
+| mariadb_major_version | Major version of MariaDB (e.g., '10.6') | `string` | `"10.6"`             | no |
+| audit_events | Comma-separated list of events to audit | `string` | `"CONNECT,QUERY"`    | no |
+| audit_file_rotations | Number of audit file rotations to keep | `string` | `"10"`               | no |
+| audit_file_rotate_size | Size in bytes before rotating audit file | `string` | `"1000000"`          | no |
+| audit_incl_users | Comma-separated list of users to include in audit logs (SERVER_AUDIT_INCL_USERS). If set, only these users will be audited. Leave empty to audit all users. | `string` | `""`                 | no |
+| audit_excl_users | Comma-separated list of users to exclude from audit logs (SERVER_AUDIT_EXCL_USERS). The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly. | `string` | `"rdsadmin"`         | no |
+| audit_query_log_limit | Maximum query length to log in bytes (SERVER_AUDIT_QUERY_LOG_LIMIT). Queries longer than this will be truncated. | `string` | `"1024"`             | no |
+| udc_name | Name for universal connector (used for AWS objects) | `string` | `"mariadb-gdp"`      | no |
+| udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a                  | yes |
+| gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a                  | yes |
+| gdp_client_secret | Client secret from output of grdapi register_oauth_client | `string` | n/a                  | yes |
+| gdp_server | Hostname/IP address of Guardium Central Manager | `string` | n/a                  | yes |
+| gdp_port | Port of Guardium Central Manager | `string` | `"8443"`             | no |
+| gdp_username | Username of Guardium Web UI user | `string` | n/a                  | yes |
+| gdp_password | Password of Guardium Web UI user | `string` | n/a                  | yes |
+| gdp_ssh_username | Guardium OS user with SSH access | `string` | n/a                  | yes |
+| gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS | `string` | n/a                  | yes |
+| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | `string` | `""`                 | no |
+| log_export_type | Type of log export (Cloudwatch) | `string` | `"Cloudwatch"`       | no |
+| force_failover | Whether to force failover during parameter group update | `bool` | `false`              | no |
+| enable_universal_connector | Whether to enable the universal connector | `bool` | `true`               | no |
+| csv_start_position | Start position for UDC | `string` | `"end"`              | no |
+| csv_interval | Polling interval for UDC | `string` | `"5"`                | no |
+| csv_event_filter | UDC Event filters | `string` | `""`                 | no |
+| tags | Map of tags to apply to resources | `map(string)` | `{}`                 | no |
 
 ## Outputs
 

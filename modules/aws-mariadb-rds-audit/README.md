@@ -16,7 +16,7 @@ Before using this module, you need to:
 |------|---------|
 | terraform | >= 1.0.0 |
 | aws | >= 4.0.0 |
-| guardium-data-protection | >= 0.0.4 |
+| guardium-data-protection | >= 1.0.0 |
 
 ### Option Group and Parameter Group Import Process
 
@@ -66,7 +66,7 @@ To ensure Terraform manages your RDS instance correctly:
 
 ## Usage
 
-### Using a `tfvars` File
+### Using a tfvars File
 
 Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
 
@@ -86,7 +86,7 @@ terraform apply -var-file=defaults.tfvars
 ## Provider Configuration
 
 This module requires both the AWS provider and the Guardium Data Protection provider.
-The providers are configured using the variables.
+The providers are configured automatically using the variables you provide:
 
 ```hcl
 provider "aws" {
