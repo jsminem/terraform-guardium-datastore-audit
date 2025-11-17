@@ -225,8 +225,7 @@ module "mariadb_audit" {
   mariadb_major_version          = "10.6"
   
   # Audit Configuration
-  audit_events          = "CONNECT,QUERY,TABLE"
-  exclude_rdsadmin_user = true  # Exclude rdsadmin health check queries (recommended)
+  audit_events          = "CONNECT,QUERY"
   
   # Guardium Configuration
   gdp_server             = "guardium.example.com"
