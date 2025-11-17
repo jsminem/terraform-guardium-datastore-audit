@@ -56,7 +56,7 @@ To ensure Terraform manages your RDS instance correctly:
    terraform import module.common_rds-mariadb-mysql-parameter-group.aws_db_option_group.audit <your-option-group-name>
    ```
 
-**Note**: Skipping the import step will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
+**Note**: Skipping the import steps will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
 
 ## Features
 
