@@ -136,23 +136,23 @@ Guardium is configured to collect and analyze these logs through the Universal C
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region | string | `"us-east-1"` | no |
 | neptune_cluster_identifier | Neptune cluster identifier to be monitored | string | n/a | yes |
-| neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | string | `""` | no |
 | tags | Map of tags to apply to resources | map(string) | n/a | yes |
 | udc_aws_credential | Name of AWS credential defined in Guardium | string | n/a | yes |
-| gdp_client_secret | Client secret from output of grdapi register_oauth_client | string | n/a | yes |
-| gdp_client_id | Client id used when running grdapi register_oauth_client | string | n/a | yes |
-| gdp_server | Hostname/IP address of Guardium Central Manager | string | n/a | yes |
+| gdp_client_secret | Client secret from Guardium | string | n/a | yes |
+| gdp_client_id | Client ID from Guardium | string | n/a | yes |
+| gdp_server | Guardium server hostname/IP | string | n/a | yes |
 | gdp_port | Port of Guardium Central Manager | string | `"8443"` | no |
-| gdp_username | Username of Guardium Web UI user | string | n/a | yes |
-| gdp_password | Password of Guardium Web UI user | string | n/a | yes |
-| gdp_ssh_username | Guardium OS user with SSH access | string | n/a | yes |
-| gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS with ssh username | string | n/a | yes |
-| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | string | n/a | yes |
-| enable_universal_connector | Whether to enable the universal connector module. Set to false to completely disable the universal connector for a run. | bool | `true` | no |
+| gdp_username | Guardium username | string | n/a | yes |
+| gdp_password | Guardium password | string | n/a | yes |
+| gdp_ssh_username | Guardium SSH username | string | n/a | yes |
+| gdp_ssh_privatekeypath | Path to SSH private key | string | n/a | yes |
+| gdp_mu_host | Comma separated list of Guardium Managed Units | string | n/a | yes |
+| enable_universal_connector | Whether to enable the universal connector | bool | `true` | no |
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |
 | csv_event_filter | UDC Event filters | string | `""` | no |
-| use_aws_bundled_ca | Whether to use AWS bundled CA certificates for Neptune connections | bool | `true` | no |
+| neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | string | `""` | no |
+| use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for Neptune connection | bool | `true` | no |
 
 ## Outputs
 

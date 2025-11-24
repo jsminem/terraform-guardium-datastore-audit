@@ -66,36 +66,29 @@ Audit logs are automatically sent to CloudWatch Logs at:
    terraform apply
    ```
 
-## Configuration Variables
+## Input Variables
 
-### Required Variables
-
-| Variable | Description |
-|----------|-------------|
-| `neptune_cluster_identifier` | The identifier of your Neptune cluster |
-| `udc_aws_credential` | Name of AWS credential stored in Guardium |
-| `gdp_server` | Hostname/IP of Guardium Central Manager |
-| `gdp_username` | Guardium Web UI username |
-| `gdp_password` | Guardium Web UI password |
-| `gdp_client_id` | OAuth client ID from Guardium |
-| `gdp_client_secret` | OAuth client secret from Guardium |
-| `gdp_ssh_username` | SSH username for Guardium OS |
-| `gdp_ssh_privatekeypath` | Path to SSH private key |
-| `gdp_mu_host` | Comma separated list of Guardium Managed Units to deploy profile |
-| `tags` | Map of tags to apply to resources |
-
-### Optional Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `aws_region` | `us-east-1` | AWS region |
-| `neptune_endpoint` | `""` | Neptune cluster endpoint (fetched automatically if not provided) |
-| `gdp_port` | `8443` | Guardium Central Manager port |
-| `enable_universal_connector` | `true` | Enable/disable Universal Connector |
-| `csv_start_position` | `end` | Start position for log processing |
-| `csv_interval` | `5` | Polling interval in seconds |
-| `csv_event_filter` | `""` | UDC Event filters |
-| `use_aws_bundled_ca` | `true` | Whether to use AWS bundled CA certificates for Neptune connections |
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| aws_region | AWS region where resources will be created | `string` | `"us-east-1"` | no |
+| neptune_cluster_identifier | Neptune cluster identifier to be monitored | `string` | n/a | yes |
+| tags | Map of tags to apply to resources | `map(string)` | n/a | yes |
+| udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a | yes |
+| gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a | yes |
+| gdp_client_secret | Client secret from output of grdapi register_oauth_client | `string` | n/a | yes |
+| gdp_server | Hostname/IP address of Guardium Central Manager | `string` | n/a | yes |
+| gdp_port | Port of Guardium Central Manager | `string` | `"8443"` | no |
+| gdp_username | Username of Guardium Web UI user | `string` | n/a | yes |
+| gdp_password | Password of Guardium Web UI user | `string` | n/a | yes |
+| gdp_ssh_username | Guardium OS user with SSH access | `string` | n/a | yes |
+| gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS | `string` | n/a | yes |
+| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | `string` | n/a | yes |
+| enable_universal_connector | Whether to enable the universal connector | `bool` | `true` | no |
+| csv_start_position | Start position for UDC | `string` | `"end"` | no |
+| csv_interval | Polling interval for UDC | `string` | `"5"` | no |
+| csv_event_filter | UDC Event filters | `string` | `""` | no |
+| neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | `string` | `""` | no |
+| use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for Neptune connection | `bool` | `true` | no |
 
 ## Outputs
 
