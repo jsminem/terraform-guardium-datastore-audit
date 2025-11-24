@@ -10,6 +10,12 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 4.0.0"
     }
+
+    gdp-middleware-helper = {
+      source = "IBM/gdp-middleware-helper"
+      version = ">= 1.0.0"
+    }
+
     guardium-data-protection = {
       source  = "IBM/guardium-data-protection"
       version = ">= 1.0.0"

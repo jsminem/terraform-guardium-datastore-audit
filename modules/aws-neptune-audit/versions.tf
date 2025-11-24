@@ -4,21 +4,32 @@
 #
 
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 0.13"
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">= 4.0.0"
+    local = {
+      source = "hashicorp/local"
+    }
+    archive = {
+      source = "hashicorp/archive"
     }
 
     gdp-middleware-helper = {
+      source = "na.artifactory.swg-devops.com/ibm/gdp-middleware-helper"
+    }
+
+/*     gdp-middleware-helper = {
       source = "IBM/gdp-middleware-helper"
+      version = ">= 1.0.0"
+    } */
+
+    guardium-data-protection = {
+      source = "IBM/guardium-data-protection"
       version = ">= 1.0.0"
     }
 
-    guardium-data-protection = {
-      source  = "IBM/guardium-data-protection"
-      version = ">= 1.0.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 6.0"
     }
   }
 }
