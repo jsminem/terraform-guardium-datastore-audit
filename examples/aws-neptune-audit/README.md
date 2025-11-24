@@ -1,29 +1,123 @@
-# AWS Neptune Audit Logging with IBM Guardium Data Protection
+# AWS Neptune with IBM Guardium Data Protection
 
-This example demonstrates how to enable audit logging for AWS Neptune and integrate it with IBM Guardium Data Protection using the Universal Connector.
+This example demonstrates how to configure AWS Neptune with IBM Guardium Data Protection using audit logging for comprehensive monitoring.
+
+## Architecture
+
+```
+┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
+│                   │     │                   │     │                   │
+│  AWS Neptune      │────►│  Neptune Audit    │────►│  CloudWatch Logs  │
+│  Cluster          │     │  Logging          │     │                   │
+└───────────────────┘     └───────────────────┘     └───────────────────┘
+                                                            │
+                                                            │
+                                                            ▼
+                                                     ┌───────────────────┐
+                                                     │                   │
+                                                     │  Guardium         │
+                                                     │  Universal        │
+                                                     │  Connector        │
+                                                     │                   │
+                                                     └───────────────────┘
+                                                            │
+                                                            │
+                                                            ▼
+                                                     ┌───────────────────┐
+                                                     │                   │
+                                                     │  Guardium Data    │
+                                                     │  Protection       │
+                                                     │                   │
+                                                     └───────────────────┘
+```
+
+## Data Flow
+
+1. Neptune database activity is captured by Neptune audit logging
+2. Audit logs are sent to CloudWatch Logs
+3. Guardium Universal Connector reads from CloudWatch Logs
+4. Guardium processes and analyzes the Neptune activity
+5. Security teams can view and alert on Neptune activity in Guardium
 
 ## Overview
 
 This Terraform configuration:
-- Creates or modifies a Neptune cluster parameter group to enable audit logging (`neptune_enable_audit_log = 1`)
-- Automatically attaches the parameter group to your Neptune cluster
-- Enables "Audit log" in CloudWatch log exports
-- Configures CloudWatch Logs integration for Neptune audit logs
-- Sets up IBM Guardium Universal Connector to monitor Neptune audit events
-- Supports both default and custom parameter groups
+
+1. Configures an existing AWS Neptune cluster for audit logging
+2. Sets up a Universal Data Connector in Guardium to collect and analyze Neptune audit logs from CloudWatch
+3. Enables comprehensive monitoring of database operations, user activity, and access patterns
 
 ## Prerequisites
 
-1. **AWS Neptune Cluster**: An existing Neptune cluster that you want to monitor
-2. **IBM Guardium Data Protection**: A running Guardium instance with:
-   - OAuth client registered (use `grdapi register_oauth_client`)
-   - AWS credentials configured in Guardium
-   - SSH access configured
-3. **Terraform**: Version 0.13 or later
-4. **AWS Credentials**: Configured with appropriate permissions to:
-   - Manage Neptune parameter groups
-   - Access CloudWatch Logs
-   - Read Neptune cluster metadata
+Before using this example, ensure you have:
+
+1. **AWS Resources**:
+   - An existing AWS Neptune cluster
+
+2. **Guardium Data Protection**:
+   - A running Guardium Data Protection instance
+   - Completed the one-time manual configurations as described in [Preparing Guardium Documentation](https://github.com/IBM/terraform-guardium-gdp/blob/main/docs/preparing-guardium.md):
+      - OAuth client registered via `grdapi register_oauth_client`
+      - AWS credentials configured in Guardium Data Protection
+      - SSH access configured for Terraform
+
+## Usage
+
+### 1. Create a terraform.tfvars File
+
+Create a `terraform.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
+
+### 2. Initialize Terraform
+
+  ```bash
+  terraform init
+  ```
+
+### 3. Import the Neptune Parameter Group (if using custom parameter group)
+
+Identify existing parameter group name:
+
+  ```bash
+  # Get current parameter group name
+  aws neptune describe-db-clusters \
+    --db-cluster-identifier your-neptune-cluster \
+    --region your-region \
+    --query "DBClusters[0].DBClusterParameterGroup" \
+    --output text
+  ```
+
+Import existing parameter group (only if it's a custom parameter group):
+   ```bash
+   terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <your-parameter-group-name>
+   ```
+
+**Note**: Skipping the import step for custom parameter groups will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
+
+### 4. Apply the Configuration
+
+  ```bash
+  terraform apply
+  ```
+
+Review the planned changes and type `yes` to apply them.
+
+### 5. Verify the Configuration
+
+After successful application:
+
+1. Log in to your Guardium Data Protection web interface
+2. Navigate to **Universal Connector** → **Datasource Profile Management**
+3. Verify that the Neptune profile has been created and is active
+4. Navigate to **CloudWatch** → **Log Groups** on the AWS UI and search for `/aws/neptune/<neptune_cluster_id>/audit`. You should see log groups created
+5. Navigate to the machine unit the UC is deployed on and ensure the STAP status is green/active
+
+## CloudWatch Integration
+
+The module configures Neptune to send audit logs to CloudWatch Logs. The Universal Connector then:
+
+1. Reads these logs from CloudWatch using the configured AWS credentials
+2. Parses and normalizes the log data
+3. Forwards the processed audit events to Guardium for analysis
 
 ## Neptune Audit Logging
 
@@ -32,47 +126,13 @@ Neptune audit logging captures:
 - **SPARQL queries**: W3C SPARQL queries for RDF data
 - Connection events and authentication attempts
 
-Audit logs are automatically sent to CloudWatch Logs at:
-```
-/aws/neptune/<cluster-name>/audit
-```
-
-## Usage
-
-1. **Copy the example configuration**:
-   ```bash
-   cp terraform.tfvars.example terraform.tfvars
-   ```
-
-2. **Edit `terraform.tfvars`** with your specific values:
-   - Neptune cluster identifier
-   - Neptune endpoint (optional)
-   - Guardium server details
-   - AWS credentials name in Guardium
-   - OAuth client credentials
-
-3. **Initialize Terraform**:
-   ```bash
-   terraform init
-   ```
-
-4. **Review the plan**:
-   ```bash
-   terraform plan
-   ```
-
-5. **Apply the configuration**:
-   ```bash
-   terraform apply
-   ```
-
 ## Input Variables
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region where resources will be created | `string` | `"us-east-1"` | no |
 | neptune_cluster_identifier | Neptune cluster identifier to be monitored | `string` | n/a | yes |
-| tags | Map of tags to apply to resources | `map(string)` | n/a | yes |
+| neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | `string` | `""` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a | yes |
 | gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a | yes |
 | gdp_client_secret | Client secret from output of grdapi register_oauth_client | `string` | n/a | yes |
@@ -87,98 +147,17 @@ Audit logs are automatically sent to CloudWatch Logs at:
 | csv_start_position | Start position for UDC | `string` | `"end"` | no |
 | csv_interval | Polling interval for UDC | `string` | `"5"` | no |
 | csv_event_filter | UDC Event filters | `string` | `""` | no |
-| neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | `string` | `""` | no |
 | use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for Neptune connection | `bool` | `true` | no |
+| tags | Map of tags to apply to resources | `map(string)` | `{}` | no |
 
 ## Outputs
 
-| Output | Description |
-|--------|-------------|
-| `udc_name` | Name of the Universal Connector |
-| `parameter_group_name` | Name of the Neptune parameter group |
-| `cloudwatch_log_group` | CloudWatch Log Group for audit logs |
-| `aws_region` | AWS region where resources are deployed |
-| `aws_account_id` | AWS account ID |
-| `neptune_cluster_identifier` | Neptune cluster identifier |
-| `neptune_cluster_endpoint` | Neptune cluster endpoint |
-
-## Important Notes
-
-### Parameter Group Behavior
-
-- **Default Parameter Group**: If your Neptune cluster uses the default parameter group, this module creates a new custom parameter group
-- **Custom Parameter Group**: If your cluster already uses a custom parameter group, the module modifies it to enable audit logging
-
-### Automatic Configuration
-
-The module automatically:
-- Attaches the created parameter group to your Neptune cluster
-- Enables "Audit log" in CloudWatch log exports
-- Applies changes immediately
-- Reboots the cluster if needed for the `neptune_enable_audit_log` parameter to take effect
-
-Plan for a maintenance window accordingly as the cluster may be rebooted during the apply process.
-
-### Importing Existing Parameter Groups
-
-To import an existing parameter group:
-```bash
-terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <parameter-group-name>
-```
-
-### CloudWatch Logs
-
-Neptune automatically creates the CloudWatch Log Group when audit logging is enabled. No manual log group creation is needed.
-
-## Limitations
-
-Based on the Neptune-Guardium Logstash filter documentation:
-
-1. **SourceProgram**: Not available in Neptune audit logs (field left blank)
-2. **OS User**: Not available in Neptune audit logs
-3. **Client HostName**: Not available in Neptune audit logs
-4. **Error Logs**: Neptune audit logs don't include error logs, so SQL_ERROR and LOGIN_FAILED reports won't show Neptune errors
-
-## Supported Neptune Versions
-
-- Neptune 1.1 and above
-- Supports both Gremlin and SPARQL query languages
-
-## Guardium Support
-
-- **Guardium Data Protection**: 11.4 and above
-- **Guardium Data Security Center SaaS**: 1.0
-
-## Troubleshooting
-
-### Audit Logs Not Appearing
-
-1. Verify the parameter group is attached to your Neptune cluster
-2. Confirm the cluster has been rebooted after parameter change
-3. Check CloudWatch Logs for the log group `/aws/neptune/<cluster-name>/audit`
-4. Verify AWS credentials in Guardium have CloudWatch read permissions
-
-### Universal Connector Issues
-
-1. Verify OAuth client is properly registered in Guardium
-2. Check SSH connectivity to Guardium server
-3. Confirm AWS credential name matches what's configured in Guardium
-4. Review Guardium logs for connection errors
-
-## Security Considerations
-
-- Store sensitive values (passwords, secrets) securely using Terraform variables or secret management tools
-- Use IAM roles with least privilege for AWS access
-- Regularly rotate OAuth client secrets
-- Monitor CloudWatch Logs for unauthorized access attempts
-
-## References
-
-- [Neptune Audit Logging Documentation](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
-- [IBM Guardium Universal Connector](https://github.com/IBM/universal-connectors)
-- [Neptune-Guardium Filter Plugin](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-neptune-aws-guardium)
-
-## License
-
-Copyright IBM Corp. 2025
-SPDX-License-Identifier: Apache-2.0
+| Name | Description |
+|------|-------------|
+| udc_name | Name of the Universal Connector |
+| parameter_group_name | Name of the Neptune cluster parameter group |
+| cloudwatch_log_group | CloudWatch Log Group for audit logs |
+| aws_region | AWS region where resources are deployed |
+| aws_account_id | AWS account ID |
+| neptune_cluster_identifier | Neptune cluster identifier |
+| neptune_cluster_endpoint | Neptune cluster endpoint |
