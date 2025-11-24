@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "datastore-audit_aws-neptune-audit" {
-  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-datastore-audit/modules/aws-neptune-audit"
+  source = "../../modules/aws-neptune-audit"
 
   # AWS Configuration
   aws_region                   = var.aws_region
