@@ -14,13 +14,9 @@ terraform {
     }
 
     gdp-middleware-helper = {
-      source = "na.artifactory.swg-devops.com/ibm/gdp-middleware-helper"
-    }
-
-/*     gdp-middleware-helper = {
       source = "IBM/gdp-middleware-helper"
       version = ">= 1.0.0"
-    } */
+    }
 
     guardium-data-protection = {
       source = "IBM/guardium-data-protection"
