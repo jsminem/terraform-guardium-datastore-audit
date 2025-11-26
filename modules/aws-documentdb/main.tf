@@ -82,6 +82,11 @@ module "gdp_connect-datasource-to-uc" {
   count  = var.enable_universal_connector ? 1 : 0  # Skip creation when disabled
   udc_name = local.udc_name
   udc_csv_parsed = local.document_db_csv
+  
+  # Directory configuration - pass through to child module
+  profile_upload_directory = var.profile_upload_directory
+  profile_api_directory    = var.profile_api_directory
+  
   client_id              = var.gdp_client_id
   client_secret          = var.gdp_client_secret
   gdp_server             = var.gdp_server

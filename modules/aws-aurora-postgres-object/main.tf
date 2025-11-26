@@ -78,6 +78,8 @@ module "aurora-postgres-sqs-registration" {
   csv_start_position = var.csv_start_position
   csv_interval = var.csv_interval
   csv_event_filter = var.csv_event_filter
+  profile_upload_directory = var.profile_upload_directory
+  profile_api_directory    = var.profile_api_directory
 }
 
 module "aurora-postgres-cloudwatch-registration" {
@@ -100,4 +102,6 @@ module "aurora-postgres-cloudwatch-registration" {
   csv_start_position = var.csv_start_position
   csv_interval = var.csv_interval
   csv_event_filter = var.csv_event_filter
+  profile_upload_directory = var.profile_upload_directory
+  profile_api_directory    = var.profile_api_directory
 }

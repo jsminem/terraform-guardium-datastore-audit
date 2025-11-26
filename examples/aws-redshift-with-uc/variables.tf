@@ -5,6 +5,7 @@
 
 # AWS Redshift with Universal Connector Example Variables
 
+
 variable "name_prefix" {
   description = "Prefix for resource names"
   type        = string
@@ -178,4 +179,16 @@ variable "csv_cluster_name" {
   description = "Cluster name for the Universal Connector"
   type        = string
   default     = "default"
+}
+
+variable "profile_upload_directory" {
+  description = "Directory path for SCP upload (may be chroot path for CLI user, e.g., /upload)"
+  type        = string
+  default     = ""
+}
+
+variable "profile_api_directory" {
+  description = "Full filesystem path for Guardium API to read CSV files (e.g., /var/IBM/Guardium/file-server/upload)"
+  type        = string
+  default     = ""
 }

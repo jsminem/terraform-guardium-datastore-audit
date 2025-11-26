@@ -156,13 +156,17 @@ resource "null_resource" "configure_logging" {
   depends_on = [null_resource.apply_parameter_group]
 }
 
-# Universal Connector module
+# Universal Connector module - using local for testing
 module "gdp_connect-datasource-to-uc" {
   source = "IBM/gdp/guardium//modules/connect-datasource-to-uc"
   count  = var.enable_universal_connector ? 1 : 0  # Skip creation when disabled
   
   udc_name = local.udc_name_safe
   udc_csv_parsed = local.udc_csv
+  
+  # Directory configuration - pass through to child module
+  profile_upload_directory = var.profile_upload_directory
+  profile_api_directory    = var.profile_api_directory
   
   client_id              = var.gdp_client_id
   client_secret          = var.gdp_client_secret

@@ -125,3 +125,15 @@ variable "log_export_type" {
     error_message = "log_export_type must be 'SQS' or 'Cloudwatch'"
   }
 }
+
+variable "profile_upload_directory" {
+  type        = string
+  description = "Directory path for SFTP upload (chroot path for CLI user)"
+  default     = "/upload"
+}
+
+variable "profile_api_directory" {
+  type        = string
+  description = "Full filesystem path for Guardium API to read CSV files"
+  default     = "/var/IBM/Guardium/file-server/upload"
+}
