@@ -120,16 +120,6 @@ This module configures CloudWatch integration for Neptune auditing. The audit lo
 
 Guardium is configured to collect and analyze these logs through the Universal Connector.
 
-## Supported Neptune Versions
-
-- Neptune 1.1 and above
-- Supports both Gremlin and SPARQL query languages
-
-## Guardium Support
-
-- **Guardium Data Protection**: 11.4 and above
-- **Guardium Data Security Center SaaS**: 1.0
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -166,48 +156,3 @@ Guardium is configured to collect and analyze these logs through the Universal C
 | aws_account_id | AWS account ID |
 | neptune_cluster_identifier | Neptune cluster identifier |
 | neptune_cluster_endpoint | Neptune cluster endpoint |
-
-## Important Notes
-
-### Automatic Configuration
-
-The module automatically handles the complete setup:
-- Attaches the created parameter group to your Neptune cluster
-- Enables "Audit log" in CloudWatch log exports
-- Applies changes immediately
-- Waits for the cluster to become available
-- Reboots the cluster if needed for the `neptune_enable_audit_log` parameter to take effect
-
-Plan for a maintenance window accordingly as the cluster may be rebooted during the apply process.
-
-### Limitations
-
-Based on the Neptune-Guardium Logstash filter documentation:
-
-1. **SourceProgram**: Not available in Neptune audit logs (field left blank in Guardium)
-2. **OS User**: Not available in Neptune audit logs
-3. **Client HostName**: Not available in Neptune audit logs
-4. **Error Logs**: Neptune audit logs don't include error logs, so SQL_ERROR and LOGIN_FAILED reports won't show Neptune errors. Invalid queries will appear in Guardium logs instead of records.
-
-### Security Considerations
-
-- Store sensitive values (passwords, secrets) securely using Terraform variables or secret management tools
-- Use IAM roles with least privilege for AWS access
-- Regularly rotate OAuth client secrets
-- Monitor CloudWatch Logs for unauthorized access attempts
-- The `neptune_enable_audit_log` parameter is set to `1` to enable audit logging
-
-## Example
-
-See the [examples/aws-neptune-audit](../../examples/aws-neptune-audit) directory for a complete example of how to use this module.
-
-## References
-
-- [Neptune Audit Logging Documentation](https://docs.aws.amazon.com/neptune/latest/userguide/auditing.html)
-- [IBM Guardium Universal Connector](https://github.com/IBM/universal-connectors)
-- [Neptune-Guardium Filter Plugin](https://github.com/IBM/universal-connectors/tree/main/filter-plugin/logstash-filter-neptune-aws-guardium)
-
-## License
-
-Copyright IBM Corp. 2025
-SPDX-License-Identifier: Apache-2.0

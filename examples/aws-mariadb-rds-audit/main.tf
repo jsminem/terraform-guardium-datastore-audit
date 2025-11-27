@@ -15,7 +15,6 @@ module "datastore-audit_aws-mariadb-rds-audit" {
 
   # MariaDB RDS Configuration
   mariadb_rds_cluster_identifier = var.mariadb_rds_cluster_identifier
-  mariadb_major_version          = var.mariadb_major_version
   force_failover                 = var.force_failover
 
   # Audit Configuration

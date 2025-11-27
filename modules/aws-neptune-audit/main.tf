@@ -63,6 +63,17 @@ resource "gdp-middleware-helper_neptune_modify" "enable_audit_logs" {
   apply_immediately               = true
 }
 
+# Reboot Neptune cluster instances to apply the parameter group changes
+# Neptune requires a reboot for neptune_enable_audit_log parameter to take effect
+resource "gdp-middleware-helper_neptune_reboot" "reboot_cluster" {
+  depends_on = [
+    gdp-middleware-helper_neptune_modify.enable_audit_logs,
+  ]
+
+  cluster_identifier = var.neptune_cluster_identifier
+  region             = var.aws_region
+}
+
 //////
 // Universal Connector Module - Can be disabled with enable_universal_connector = false
 //////

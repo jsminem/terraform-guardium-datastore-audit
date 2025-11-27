@@ -31,12 +31,6 @@ variable "force_failover" {
   description = "To failover the database instance, requires multi AZ databases. Results in minimal downtime"
 }
 
-variable "mariadb_major_version" {
-  type        = string
-  description = "Major version of MariaDB (e.g., '10.6')"
-  default = "10.6"
-}
-
 variable "audit_events" {
   type        = string
   description = "Comma-separated list of events to audit (CONNECT,QUERY,TABLE,QUERY_DDL,QUERY_DML,QUERY_DCL)"

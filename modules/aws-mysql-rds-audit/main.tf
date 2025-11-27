@@ -19,7 +19,6 @@ module "common_rds-mariadb-mysql-parameter-group" {
 
   db_engine = "mysql"
   rds_cluster_identifier = var.mysql_rds_cluster_identifier
-  db_major_version = var.mysql_major_version
   audit_events = var.audit_events
   audit_file_rotations = var.audit_file_rotations
   audit_file_rotate_size = var.audit_file_rotate_size

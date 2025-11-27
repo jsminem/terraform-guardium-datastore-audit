@@ -31,12 +31,6 @@ variable "force_failover" {
   description = "To failover the database instance, requires multi AZ databases. Results in minimal downtime"
 }
 
-variable "mysql_major_version" {
-  type        = string
-  description = "Major version of MySQL (e.g., '5.7')"
-  default     = "5.7"
-}
-
 variable "audit_events" {
   type        = string
   description = "Comma-separated list of events to audit (CONNECT,QUERY,TABLE,QUERY_DDL,QUERY_DML,QUERY_DCL)"

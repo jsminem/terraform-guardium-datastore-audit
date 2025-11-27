@@ -15,7 +15,6 @@ module "datastore-audit_aws-mysql-rds-audit" {
 
   # MySQL RDS Configuration
   mysql_rds_cluster_identifier   = var.mysql_rds_cluster_identifier
-  mysql_major_version            = var.mysql_major_version
   force_failover                 = var.force_failover
 
   # Audit Configuration

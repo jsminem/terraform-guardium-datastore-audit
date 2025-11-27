@@ -109,7 +109,7 @@ After successful application:
 2. Navigate to **Universal Connector** → **Datasource Profile Management**
 3. Verify that the Neptune profile has been created and is active
 4. Navigate to **CloudWatch** → **Log Groups** on the AWS UI and search for `/aws/neptune/<neptune_cluster_id>/audit`. You should see log groups created
-5. Navigate to the machine unit the UC is deployed on and ensure the STAP status is green/active
+5. Navigate to the managed unit (collector) the UC is deployed on and ensure the STAP status is green/active
 
 ## CloudWatch Integration
 
