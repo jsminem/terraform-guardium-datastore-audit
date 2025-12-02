@@ -144,7 +144,6 @@ Guardium is configured to collect and analyze these logs.
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region | string | `"us-east-2"` | no |
 | mariadb_rds_cluster_identifier | MariaDB RDS cluster identifier | string | `"guardium-mariadb"` | no |
-| mariadb_major_version | Major version of MariaDB (e.g., '10.6') | string | `"10.6"` | no |
 | audit_events | Comma-separated list of events to audit | string | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | string | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | string | `"1000000"` | no |

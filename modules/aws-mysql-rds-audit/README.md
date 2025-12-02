@@ -165,7 +165,6 @@ Guardium is configured to collect and analyze these logs.
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region | string | `"us-east-2"` | no |
 | mysql_rds_cluster_identifier | MySQL RDS cluster identifier | string | `"guardium-mysql"` | no |
-| mysql_major_version | Major version of MySQL (e.g., '5.7') | string | `"5.7"` | no |
 | audit_events | Comma-separated list of events to audit | string | `"CONNECT,QUERY"` | no |
 | audit_file_rotations | Number of audit file rotations to keep | string | `"10"` | no |
 | audit_file_rotate_size | Size in bytes before rotating audit file | string | `"1000000"` | no |
