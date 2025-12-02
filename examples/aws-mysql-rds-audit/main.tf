@@ -25,6 +25,10 @@ module "datastore-audit_aws-mysql-rds-audit" {
   audit_excl_users               = var.audit_excl_users
   audit_query_log_limit          = var.audit_query_log_limit
   log_export_type                = var.log_export_type
+  codec_pattern                  = var.codec_pattern
+  cloudwatch_endpoint            = var.cloudwatch_endpoint
+  use_aws_bundled_ca             = var.use_aws_bundled_ca
+  use_multipart_upload           = var.use_multipart_upload
 
   # Guardium Configuration
   udc_name                       = var.udc_name

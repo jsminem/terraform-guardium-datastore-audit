@@ -174,20 +174,26 @@ variable "log_export_type" {
   }
 }
 
-variable "profile_upload_directory" {
+variable "codec_pattern" {
   type        = string
-  description = "Directory path for SFTP upload (chroot path for CLI user)"
-  default     = "/upload"
+  description = "Codec pattern for RDS MySQL CloudWatch logs"
+  default     = "plain"
 }
 
-variable "profile_api_directory" {
+variable "cloudwatch_endpoint" {
   type        = string
-  description = "Full filesystem path for Guardium API to read CSV files"
-  default     = "/var/IBM/Guardium/file-server/upload"
+  description = "Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint"
+  default     = ""
+}
+
+variable "use_aws_bundled_ca" {
+  type        = bool
+  description = "Whether to use the AWS bundled CA certificates for CloudWatch connection"
+  default     = true
 }
 
 variable "use_multipart_upload" {
   type        = bool
-  description = "Whether to use multipart upload for CSV files (true) or SFTP (false)"
+  description = "Whether to use multipart upload for the import profiles API call"
   default     = true
 }

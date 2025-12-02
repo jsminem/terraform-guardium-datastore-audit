@@ -173,3 +173,27 @@ variable "log_export_type" {
     error_message = "log_export_type must be 'Cloudwatch'"
   }
 }
+
+variable "codec_pattern" {
+  type        = string
+  description = "Codec pattern for RDS MariaDB CloudWatch logs"
+  default     = "plain"
+}
+
+variable "cloudwatch_endpoint" {
+  type        = string
+  description = "Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint"
+  default     = ""
+}
+
+variable "use_aws_bundled_ca" {
+  type        = bool
+  description = "Whether to use the AWS bundled CA certificates for CloudWatch connection"
+  default     = true
+}
+
+variable "use_multipart_upload" {
+  type        = bool
+  description = "Whether to use multipart upload for the import profiles API call"
+  default     = true
+}
