@@ -117,3 +117,12 @@ audit_query_log_limit = "1024"
 
 # Optional: Event filters for Universal Data Connector
 # csv_event_filter = ""
+
+# Optional: Custom endpoint URL for AWS CloudWatch (leave empty to use default AWS endpoint)
+# cloudwatch_endpoint = ""
+
+# Optional: Whether to use the AWS bundled CA certificates for CloudWatch connection (default: true)
+# use_aws_bundled_ca = true
+
+# Optional: Whether to use multipart upload for the import profiles API call (default: true)
+# use_multipart_upload = true
