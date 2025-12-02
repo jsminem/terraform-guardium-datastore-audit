@@ -14,7 +14,6 @@ tags = {
 # MySQL RDS Configuration
 #----------------------------------------
 mysql_rds_cluster_identifier = "your-mysql-instance"
-mysql_major_version = "5.7"
 force_failover = false
 
 #----------------------------------------

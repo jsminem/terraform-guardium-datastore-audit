@@ -19,7 +19,6 @@ tags = {
 # MariaDB RDS Configuration
 #----------------------------------------
 mariadb_rds_cluster_identifier = "your-mariadb-instance"
-mariadb_major_version = "10.6"
 force_failover = false
 
 #----------------------------------------

@@ -12,10 +12,6 @@ aws_region = "us-east-1"
 # The identifier of the MySQL RDS instance to be monitored
 mysql_rds_cluster_identifier = "your-mysql-instance"
 
-# Major version of MySQL (e.g., '5.7')
-# This is required to select the appropriate parameter group family
-mysql_major_version = "5.7"
-
 # Optional: Set to true to force a failover during parameter group update
 # Only applicable for multi-AZ deployments, will cause minimal downtime
 # force_failover = false

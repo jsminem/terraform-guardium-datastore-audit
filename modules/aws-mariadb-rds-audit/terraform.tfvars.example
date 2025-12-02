@@ -12,10 +12,6 @@ aws_region = "us-east-1"
 # The identifier of the MariaDB RDS instance to be monitored
 mariadb_rds_cluster_identifier = "your-mariadb-instance"
 
-# Major version of MariaDB (e.g., '10.6')
-# This is required to select the appropriate parameter group family
-mariadb_major_version = "10.6"
-
 # Optional: Set to true to force a failover during parameter group update
 # Only applicable for multi-AZ deployments, will cause minimal downtime
 # force_failover = false
