@@ -200,6 +200,6 @@ variable "use_aws_bundled_ca" {
 
 variable "use_multipart_upload" {
   type        = bool
-  description = "Whether to use multipart upload for the import profiles API call"
+  description = "Whether to use multipart upload for CSV files"
   default     = true
 }

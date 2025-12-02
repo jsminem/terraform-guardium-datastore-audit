@@ -30,11 +30,12 @@ audit_file_rotate_size = "1000000"
 audit_incl_users = ""  # Comma-separated list of users to include (empty = audit all users)
 audit_excl_users = "rdsadmin"  # Comma-separated list of users to exclude (rdsadmin recommended to reduce log volume)
 audit_query_log_limit = "1024"  # Maximum query length in bytes (queries longer than this will be truncated)
+cloudwatch_logs_exports = ["audit"]  # List of log types to export to CloudWatch. Valid values for MariaDB: audit, error
 log_export_type = "Cloudwatch"
 codec_pattern = "plain"  # Codec pattern for RDS MariaDB CloudWatch logs
 cloudwatch_endpoint = ""  # Custom endpoint URL for AWS CloudWatch (leave empty to use default AWS endpoint)
 use_aws_bundled_ca = true  # Whether to use the AWS bundled CA certificates for CloudWatch connection
-use_multipart_upload = true  # Whether to use multipart upload for the import profiles API call
+use_multipart_upload = true  # Whether to use multipart upload for CSV files
 
 #----------------------------------------
 # Universal Connector Configuration

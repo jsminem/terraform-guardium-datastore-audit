@@ -120,5 +120,5 @@ audit_query_log_limit = "1024"
 # Optional: Whether to use the AWS bundled CA certificates for CloudWatch connection (default: true)
 # use_aws_bundled_ca = true
 
-# Optional: Whether to use multipart upload for the import profiles API call (default: true)
+# Optional: Whether to use multipart upload for CSV files (default: true)
 # use_multipart_upload = true

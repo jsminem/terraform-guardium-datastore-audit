@@ -180,7 +180,7 @@ You can configure which events to audit using the `audit_events` variable:
 | codec_pattern | Codec pattern for RDS MySQL CloudWatch logs | `string` | `"plain"` | no |
 | cloudwatch_endpoint | Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint | `string` | `""` | no |
 | use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for CloudWatch connection | `bool` | `true` | no |
-| use_multipart_upload | Whether to use multipart upload for the import profiles API call | `bool` | `true` | no |
+| use_multipart_upload | Whether to use multipart upload for CSV files | `bool` | `true` | no |
 | tags | Map of tags to apply to resources | `map(string)` | `{}`               | no |
 
 ## Outputs
