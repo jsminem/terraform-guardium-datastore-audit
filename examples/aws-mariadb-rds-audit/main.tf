@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "datastore-audit_aws-mariadb-rds-audit" {
-  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-datastore-audit/modules/aws-mariadb-rds-audit"
+  source = "../../modules/aws-mariadb-rds-audit"
 
   # AWS Configuration
   aws_region                     = var.aws_region
