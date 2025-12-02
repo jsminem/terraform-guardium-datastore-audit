@@ -19,7 +19,6 @@ module "common_rds-mariadb-mysql-parameter-group" {
 
   db_engine = "mariadb"
   rds_cluster_identifier = var.mariadb_rds_cluster_identifier
-  db_major_version = var.mariadb_major_version
   audit_events = var.audit_events
   audit_file_rotations = var.audit_file_rotations
   audit_file_rotate_size = var.audit_file_rotate_size
@@ -33,7 +32,7 @@ module "common_rds-mariadb-mysql-parameter-group" {
 
 module "common_rds-mariadb-mysql-cloudwatch-registration" {
   count  = var.log_export_type == "Cloudwatch" ? 1 : 0
- source = "IBM/common/guardium//modules/rds-mariadb-mysql-cloudwatch-registration"
+ source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-common/modules/rds-mariadb-mysql-cloudwatch-registration"
 
   db_engine = "mariadb"
   rds_cluster_identifier = var.mariadb_rds_cluster_identifier
@@ -55,6 +54,10 @@ module "common_rds-mariadb-mysql-cloudwatch-registration" {
   csv_start_position = var.csv_start_position
   csv_interval = var.csv_interval
   csv_event_filter = var.csv_event_filter
+  codec_pattern = var.codec_pattern
+  cloudwatch_endpoint = var.cloudwatch_endpoint
+  use_aws_bundled_ca = var.use_aws_bundled_ca
   profile_upload_directory = var.profile_upload_directory
   profile_api_directory    = var.profile_api_directory
+  use_multipart_upload     = var.use_multipart_upload
 }

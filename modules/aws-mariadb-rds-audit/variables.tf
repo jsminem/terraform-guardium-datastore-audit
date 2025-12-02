@@ -31,12 +31,6 @@ variable "force_failover" {
   description = "To failover the database instance, requires multi AZ databases. Results in minimal downtime"
 }
 
-variable "mariadb_major_version" {
-  type        = string
-  description = "Major version of MariaDB (e.g., '10.6')"
-  default = "10.6"
-}
-
 variable "audit_events" {
   type        = string
   description = "Comma-separated list of events to audit (CONNECT,QUERY,TABLE,QUERY_DDL,QUERY_DML,QUERY_DCL)"
@@ -174,6 +168,24 @@ variable "log_export_type" {
   }
 }
 
+variable "codec_pattern" {
+  type = string
+  description = "Codec pattern for RDS MariaDB CloudWatch logs"
+  default = "plain"
+}
+
+variable "cloudwatch_endpoint" {
+  type = string
+  description = "Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint"
+  default = ""
+}
+
+variable "use_aws_bundled_ca" {
+  type = bool
+  description = "Whether to use the AWS bundled CA certificates for CloudWatch connection"
+  default = true
+}
+
 variable "profile_upload_directory" {
   type        = string
   description = "Directory path for SFTP upload (chroot path for CLI user)"
@@ -184,5 +196,11 @@ variable "profile_api_directory" {
   type        = string
   description = "Full filesystem path for Guardium API to read CSV files"
   default     = "/var/IBM/Guardium/file-server/upload"
+}
+
+variable "use_multipart_upload" {
+  type        = bool
+  description = "Whether to use multipart upload for the import profiles API call"
+  default     = true
 }
 
