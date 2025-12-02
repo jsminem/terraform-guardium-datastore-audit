@@ -92,6 +92,10 @@ audit_excl_users = "rdsadmin"
 # Optional: Maximum query length in bytes (queries longer than this will be truncated)
 audit_query_log_limit = "1024"
 
+# Optional: List of log types to export to CloudWatch (default: ["audit"])
+# Valid values for MySQL: audit, error
+# cloudwatch_logs_exports = ["audit"]
+
 #------------------------------------------------------------------------------
 # Universal Connector Configuration
 #------------------------------------------------------------------------------
