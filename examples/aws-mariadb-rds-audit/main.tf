@@ -8,7 +8,7 @@ provider "aws" {
 }
 
 module "datastore-audit_aws-mariadb-rds-audit" {
-  source = "../../modules/aws-mariadb-rds-audit"
+  source = "/Users/jasmine/Desktop/TerraformUC/terraform-guardium-datastore-audit/modules/aws-mariadb-rds-audit"
 
   # AWS Configuration
   aws_region                     = var.aws_region
@@ -24,6 +24,7 @@ module "datastore-audit_aws-mariadb-rds-audit" {
   audit_incl_users               = var.audit_incl_users
   audit_excl_users               = var.audit_excl_users
   audit_query_log_limit          = var.audit_query_log_limit
+  cloudwatch_logs_exports        = var.cloudwatch_logs_exports
   log_export_type                = var.log_export_type
   codec_pattern                  = var.codec_pattern
   cloudwatch_endpoint            = var.cloudwatch_endpoint

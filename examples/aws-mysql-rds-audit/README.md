@@ -159,6 +159,7 @@ You can configure which events to audit using the `audit_events` variable:
 | audit_incl_users | Comma-separated list of users to include in audit logs (SERVER_AUDIT_INCL_USERS). If set, only these users will be audited. Leave empty to audit all users. | `string` | `""`               | no |
 | audit_excl_users | Comma-separated list of users to exclude from audit logs (SERVER_AUDIT_EXCL_USERS). The rdsadmin user queries the database every second for health checks, which can cause log files to grow quickly. | `string` | `"rdsadmin"`       | no |
 | audit_query_log_limit | Maximum query length to log in bytes (SERVER_AUDIT_QUERY_LOG_LIMIT). Queries longer than this will be truncated. | `string` | `"1024"`           | no |
+| cloudwatch_logs_exports | List of log types to export to CloudWatch. Valid values for MySQL: audit, error | `list(string)` | `["audit"]` | no |
 | udc_name | Name for universal connector (used for AWS objects) | `string` | `"mysql-gdp"`      | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a                | yes |
 | gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a                | yes |
