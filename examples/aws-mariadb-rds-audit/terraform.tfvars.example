@@ -32,7 +32,6 @@ audit_excl_users = "rdsadmin"  # Comma-separated list of users to exclude (rdsad
 audit_query_log_limit = "1024"  # Maximum query length in bytes (queries longer than this will be truncated)
 cloudwatch_logs_exports = ["audit"]  # List of log types to export to CloudWatch. Valid value for MariaDB: audit
 log_export_type = "Cloudwatch"
-codec_pattern = "plain"  # Codec pattern for RDS MariaDB CloudWatch logs
 cloudwatch_endpoint = ""  # Custom endpoint URL for AWS CloudWatch (leave empty to use default AWS endpoint)
 use_aws_bundled_ca = true  # Whether to use the AWS bundled CA certificates for CloudWatch connection
 use_multipart_upload = true  # Whether to use multipart upload for CSV files
