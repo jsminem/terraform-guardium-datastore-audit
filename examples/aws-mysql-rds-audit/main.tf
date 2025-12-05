@@ -51,7 +51,6 @@ module "datastore-audit_aws-mysql-rds-audit" {
   csv_event_filter               = var.csv_event_filter
   profile_upload_directory       = var.profile_upload_directory
   profile_api_directory          = var.profile_api_directory
-  use_multipart_upload           = var.use_multipart_upload
 
   # Tags
   tags                           = var.tags

@@ -7,7 +7,10 @@ locals {
   udc_name = format("%s%s-%s", var.aws_region, var.mysql_rds_cluster_identifier, local.aws_account_id)
   aws_region     = var.aws_region
   aws_account_id = module.common_aws-configuration.aws_account_id
-  log_group = format("/aws/rds/instance/%s/audit", var.mysql_rds_cluster_identifier)
+  log_group_audit = format("/aws/rds/instance/%s/audit", var.mysql_rds_cluster_identifier)
+  log_group_error = format("/aws/rds/instance/%s/error", var.mysql_rds_cluster_identifier)
+  # Combine log groups based on what's enabled in cloudwatch_logs_exports
+  log_group = contains(var.cloudwatch_logs_exports, "error") ? "${local.log_group_audit},${local.log_group_error}" : local.log_group_audit
 }
 
 module "common_aws-configuration" {
@@ -59,4 +62,6 @@ module "common_rds-mariadb-mysql-cloudwatch-registration" {
   cloudwatch_endpoint = var.cloudwatch_endpoint
   use_aws_bundled_ca = var.use_aws_bundled_ca
   use_multipart_upload     = var.use_multipart_upload
+  profile_upload_directory = var.profile_upload_directory
+  profile_api_directory    = var.profile_api_directory
 }

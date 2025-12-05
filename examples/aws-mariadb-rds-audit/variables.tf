@@ -183,7 +183,7 @@ variable "log_export_type" {
 variable "codec_pattern" {
   type        = string
   description = "Codec pattern for RDS MariaDB CloudWatch logs"
-  default     = "plain"
+  default     = ""
 }
 
 variable "cloudwatch_endpoint" {
@@ -202,4 +202,16 @@ variable "use_multipart_upload" {
   type        = bool
   description = "Whether to use multipart upload for CSV files"
   default     = true
+}
+
+variable "profile_upload_directory" {
+  type        = string
+  description = "Directory path for SFTP upload (chroot path for CLI user)"
+  default     = "/upload"
+}
+
+variable "profile_api_directory" {
+  type        = string
+  description = "Full filesystem path for Guardium API to read CSV files"
+  default     = "/var/IBM/Guardium/file-server/upload"
 }

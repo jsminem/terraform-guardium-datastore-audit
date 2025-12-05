@@ -93,7 +93,7 @@ audit_excl_users = "rdsadmin"
 audit_query_log_limit = "1024"
 
 # Optional: List of log types to export to CloudWatch (default: ["audit"])
-# Valid values for MariaDB: audit, error
+# Valid value for MariaDB: audit
 # cloudwatch_logs_exports = ["audit"]
 
 #------------------------------------------------------------------------------
