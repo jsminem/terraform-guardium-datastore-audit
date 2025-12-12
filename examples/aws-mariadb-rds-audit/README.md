@@ -180,7 +180,6 @@ You can configure which events to audit using the `audit_events` variable:
 | use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for CloudWatch connection | `bool` | `true` | no |
 | use_multipart_upload | Whether to use multipart upload for CSV files | `bool` | `true` | no |
 | tags | Map of tags to apply to resources | `map(string)` | `{}`                 | no |
-
 ## Outputs
 
 | Name | Description |

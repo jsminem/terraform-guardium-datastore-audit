@@ -33,18 +33,21 @@ locals {
   
   # Generate the CSV content from the template based on input type
   udc_csv = var.input_type == "cloudwatch" ? templatefile("${path.module}/templates/redshift-over-cloudwatch.tpl", {
-    udc_name        = local.udc_name_safe
-    credential_name = var.udc_aws_credential
-    aws_region      = var.aws_region
-    aws_log_group_connectionlog   = local.cloudwatch_log_group_connectionlog
+    udc_name                    = local.udc_name_safe
+    credential_name             = var.udc_aws_credential
+    aws_region                  = var.aws_region
+    aws_log_group_connectionlog = local.cloudwatch_log_group_connectionlog
     aws_log_group_useractivitylog = local.cloudwatch_log_group_useractivitylog
-    aws_account_id  = local.aws_account_id
-    start_position  = var.csv_start_position
-    interval        = var.csv_interval
-    codec_pattern   = var.codec_pattern
-    event_filter    = var.csv_event_filter
-    description     = var.csv_description
-    cluster_name    = var.csv_cluster_name
+    aws_account_id              = local.aws_account_id
+    prefix                      = "false"
+    start_position              = var.csv_start_position
+    interval                    = var.csv_interval
+    codec_pattern               = var.codec_pattern
+    event_filter                = var.csv_event_filter
+    description                 = var.csv_description
+    cluster_name                = var.csv_cluster_name
+    endpoint                    = var.cloudwatch_endpoint
+    use_aws_bundled_ca          = var.use_aws_bundled_ca
   }) : templatefile("${path.module}/templates/redshift-over-s3.tpl", {
     udc_name        = local.udc_name_safe
     credential_name = var.udc_aws_credential
@@ -167,6 +170,7 @@ module "gdp_connect-datasource-to-uc" {
   # Directory configuration - pass through to child module
   profile_upload_directory = var.profile_upload_directory
   profile_api_directory    = var.profile_api_directory
+  use_multipart_upload     = var.use_multipart_upload
   
   client_id              = var.gdp_client_id
   client_secret          = var.gdp_client_secret
