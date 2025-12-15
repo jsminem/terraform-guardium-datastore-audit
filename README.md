@@ -4,7 +4,7 @@ Terraform module which configures AWS datastores for audit logging and integrate
 
 ## Scope
 
-This module automates the configuration of audit logging for various AWS datastores (DynamoDB, DocumentDB, MariaDB RDS, MySQL RDS, PostgreSQL RDS, Aurora PostgreSQL) and establishes integration with IBM Guardium Data Protection for comprehensive database activity monitoring, security analysis, and compliance reporting.
+This module automates the configuration of audit logging for various AWS datastores (DynamoDB, DocumentDB, MariaDB RDS, MySQL RDS, Neptune, PostgreSQL RDS, Aurora PostgreSQL) and establishes integration with IBM Guardium Data Protection for comprehensive database activity monitoring, security analysis, and compliance reporting.
 
 ## High-Level Architecture
 
@@ -29,9 +29,14 @@ The following diagram illustrates how this module orchestrates the configuration
         │  └─────────────┘  └──────────────┘  └─────────────────┘   │
         │                                                           │
         │  ┌─────────────────┐  ┌────────────────────────────┐      │
-        │  │  MySQL RDS      │  │  PostgreSQL RDS            │      │
-        │  │  + Audit Plugin │  │  + pgAudit (Object/Session)│      │
+        │  │  MySQL RDS      │  │  Neptune                   │      │
+        │  │  + Audit Plugin │  │  + Audit Logs              │      │
         │  └─────────────────┘  └────────────────────────────┘      │
+        │                                                           │
+        │  ┌────────────────────────────┐                           │
+        │  │  PostgreSQL RDS            │                           │
+        │  │  + pgAudit (Object/Session)│                           │
+        │  └────────────────────────────┘                           │
         │                                                           │
         │  ┌──────────────────────────────────────────────────┐     │
         │  │  Aurora PostgreSQL                               │     │
@@ -92,6 +97,7 @@ The following diagram illustrates how this module orchestrates the configuration
   - **DocumentDB**: Enables audit and profiler logs via parameter groups
   - **MariaDB RDS**: Enables MariaDB Audit Plugin via option groups
   - **MySQL RDS**: Enables MariaDB Audit Plugin via option groups (compatible with MySQL)
+  - **Neptune**: Enables audit logs via parameter groups
   - **PostgreSQL RDS**: Configures pgAudit extension for object or session-level auditing
   - **Aurora PostgreSQL**: Configures pgAudit extension for object or session-level auditing with cluster parameter groups
   - **Redshift**: Enables connection and user activity logging to CloudWatch or S3
@@ -123,6 +129,7 @@ This module provides audit configuration for the following AWS datastores:
 | AWS DocumentDB | `modules/aws-documentdb` | DocumentDB Audit Logs | CloudWatch Logs |
 | AWS MariaDB RDS | `modules/aws-mariadb-rds-audit` | MariaDB Audit Plugin | CloudWatch Logs |
 | AWS MySQL RDS | `modules/aws-mysql-rds-audit` | MariaDB Audit Plugin | CloudWatch Logs |
+| AWS Neptune | `modules/aws-neptune-audit` | Neptune Audit Logs | CloudWatch Logs |
 | AWS PostgreSQL RDS (Object) | `modules/aws-postgresql-rds-object` | pgAudit (Object-Level) | CloudWatch/SQS |
 | AWS PostgreSQL RDS (Session) | `modules/aws-postgresql-rds-session` | pgAudit (Session-Level) | CloudWatch/SQS |
 | AWS Aurora PostgreSQL (Object) | `modules/aws-aurora-postgres-object` | pgAudit (Object-Level) | CloudWatch/SQS |
@@ -278,6 +285,38 @@ module "mysql_audit" {
   gdp_client_secret      = "client-secret"
   
   # Universal Connector Configuration
+  udc_aws_credential = "aws-credential-name"
+  log_export_type    = "Cloudwatch"
+
+  tags = {
+    Environment = "production"
+  }
+}
+```
+
+### AWS Neptune Audit Configuration
+
+Enable comprehensive audit logging for Neptune clusters:
+
+```hcl
+module "neptune_audit" {
+  source = "IBM/datastore-audit/guardium//modules/aws-neptune-audit"
+
+  # AWS Configuration
+  aws_region                  = "us-east-1"
+  neptune_cluster_identifier  = "my-neptune-cluster"
+  
+  # Guardium Configuration
+  gdp_server             = "guardium.example.com"
+  gdp_username           = "admin"
+  gdp_password           = "password"
+  gdp_ssh_username       = "root"
+  gdp_ssh_privatekeypath = "~/.ssh/guardium_key"
+  gdp_client_id          = "client1"
+  gdp_client_secret      = "client-secret"
+  
+  # Universal Connector Configuration
+  udc_name           = "neptune-connector"
   udc_aws_credential = "aws-credential-name"
   log_export_type    = "Cloudwatch"
 
@@ -497,6 +536,7 @@ Complete working examples are available in the `examples/` directory:
 - [aws-dynamodb](examples/aws-dynamodb) - DynamoDB audit configuration with Universal Connector
 - [aws-mariadb-rds-audit](examples/aws-mariadb-rds-audit) - MariaDB RDS audit configuration
 - [aws-mysql-rds-audit](examples/aws-mysql-rds-audit) - MySQL RDS audit configuration
+- [aws-neptune-audit](examples/aws-neptune-audit) - Neptune audit configuration with Universal Connector
 - [aws-postgresql-rds-object](examples/aws-postgresql-rds-object) - PostgreSQL RDS object-level auditing
 - [aws-postgresql-rds-object-tables](examples/aws-postgresql-rds-object-tables) - PostgreSQL RDS object-level auditing with specific tables
 - [aws-postgresql-rds-session](examples/aws-postgresql-rds-session) - PostgreSQL RDS session-level auditing
@@ -511,7 +551,7 @@ Each example includes:
 
 - **Automated Configuration**: Automatically configures audit logging for AWS datastores
 - **Universal Connector Integration**: Seamlessly integrates with Guardium Universal Connector
-- **Multiple Datastore Support**: Supports DynamoDB, DocumentDB, MariaDB RDS, MySQL RDS, PostgreSQL RDS, and Aurora PostgreSQL
+- **Multiple Datastore Support**: Supports DynamoDB, DocumentDB, MariaDB RDS, MySQL RDS, Neptune, PostgreSQL RDS, and Aurora PostgreSQL
 - **Flexible Audit Levels**: Choose between object-level and session-level auditing for PostgreSQL and Aurora PostgreSQL
 - **CloudWatch Integration**: Leverages CloudWatch Logs for centralized log management
 - **Aurora Cluster Support**: Native support for Aurora PostgreSQL clusters with automatic parameter group management
