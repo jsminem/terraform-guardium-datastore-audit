@@ -308,17 +308,33 @@ module "neptune_audit" {
   
   # Guardium Configuration
   gdp_server             = "guardium.example.com"
+  gdp_port               = "8443"
   gdp_username           = "admin"
   gdp_password           = "password"
   gdp_ssh_username       = "root"
   gdp_ssh_privatekeypath = "~/.ssh/guardium_key"
   gdp_client_id          = "client1"
   gdp_client_secret      = "client-secret"
+  gdp_mu_host            = ""
   
   # Universal Connector Configuration
-  udc_name           = "neptune-connector"
   udc_aws_credential = "aws-credential-name"
-  log_export_type    = "Cloudwatch"
+  
+  # Optional: Universal Connector Settings
+  # enable_universal_connector = true
+  # csv_start_position = "end"
+  # csv_interval = "5"
+  # codec_pattern = ""
+  # csv_event_filter = ""
+  
+  # Optional: Neptune Configuration
+  # neptune_endpoint = ""
+  # use_aws_bundled_ca = true
+  
+  # Optional: CSV Profile Upload Configuration
+  # use_multipart_upload = false
+  # profile_upload_directory = "/upload"
+  # profile_api_directory = "/var/IBM/Guardium/file-server/upload"
 
   tags = {
     Environment = "production"
