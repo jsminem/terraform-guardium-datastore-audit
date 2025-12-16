@@ -14,10 +14,9 @@ Before using this module, you need to:
 
 | Name | Version |
 |------|---------|
-| terraform | >= 0.13 |
-| aws | ~> 6.0 |
+| terraform | >= 1.0.0 |
+| aws | >= 4.0.0 |
 | guardium-data-protection | >= 1.0.0 |
-| gdp-middleware-helper | >= 1.0.0 |
 
 ### Parameter Group Import Process
 
@@ -61,7 +60,7 @@ To ensure Terraform manages your Neptune cluster correctly when using a custom p
 
 ### Using a tfvars File
 
-Create a `terraform.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
+Create a `defaults.tfvars` file with your configuration. See [terraform.tfvars.example](./terraform.tfvars.example) for an example with available options and detailed comments.
 
 Then run:
 
@@ -70,17 +69,11 @@ Then run:
 # See the "Parameter Group Import Process" section above
 
 # Plan the changes
-terraform plan -var-file=terraform.tfvars
+terraform plan -var-file=defaults.tfvars
 
 # Apply the changes
-terraform apply -var-file=terraform.tfvars
+terraform apply -var-file=defaults.tfvars
 ```
-
-**Important**: This module automatically:
-1. Creates or modifies the Neptune cluster parameter group to enable audit logging
-2. Attaches the parameter group to your Neptune cluster
-3. Enables "Audit log" in CloudWatch log exports
-4. The changes are applied immediately, and the cluster will be rebooted automatically if needed for the parameter to take effect
 
 ## Provider Configuration
 
@@ -100,8 +93,14 @@ provider "guardium-data-protection" {
 
 Make sure your Terraform environment has access to the Guardium Data Protection provider, which is sourced from:
 ```
-IBM/guardium-data-protection
+na.artifactory.swg-devops.com/ibm/guardium-data-protection
 ```
+
+## Module Dependencies
+
+This module uses the following internal modules:
+
+1. `aws-configuration` - Retrieves AWS account information
 
 ## Neptune Audit Logging
 
@@ -110,7 +109,28 @@ Neptune audit logging captures:
 - **SPARQL queries**: W3C SPARQL queries for RDF data
 - Connection events and authentication attempts
 
-### CloudWatch Integration
+## CSV Profile Upload Methods
+
+The module supports two methods for uploading the Universal Connector CSV profile to Guardium:
+
+### Multipart Upload (Recommended - Default)
+When `use_multipart_upload = true` (default):
+- CSV file is created in your local workspace (`.terraform/` directory)
+- Provider uploads file content directly via HTTP multipart/form-data
+- No SFTP configuration required
+- More secure and easier to use
+- Works seamlessly when using modules from remote sources (Git/Terraform Registry)
+
+### Legacy SFTP Method
+When `use_multipart_upload = false`:
+- CSV file is uploaded to Guardium via SFTP first
+- Provider then sends the server path to Guardium API
+- Requires SFTP access to Guardium server
+- Maintains backward compatibility with existing deployments
+
+**Recommendation**: Use the default multipart upload method unless you have specific requirements for SFTP.
+
+## CloudWatch Integration
 
 This module configures CloudWatch integration for Neptune auditing. The audit logs are automatically sent to a CloudWatch log group with the format:
 
@@ -124,9 +144,9 @@ Guardium is configured to collect and analyze these logs through the Universal C
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| aws_region | AWS region | string | `"us-east-1"` | no |
-| neptune_cluster_identifier | Neptune cluster identifier to be monitored | string | n/a | yes |
-| tags | Map of tags to apply to resources | map(string) | n/a | yes |
+| aws_region | AWS region | string | `"us-east-2"` | no |
+| neptune_cluster_identifier | Neptune cluster identifier to be monitored | string | `"guardium-neptune"` | no |
+| tags | Map of tags to apply to resources | map(string) | `{}` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | string | n/a | yes |
 | gdp_client_secret | Client secret from Guardium | string | n/a | yes |
 | gdp_client_id | Client ID from Guardium | string | n/a | yes |
@@ -136,26 +156,25 @@ Guardium is configured to collect and analyze these logs through the Universal C
 | gdp_password | Guardium password | string | n/a | yes |
 | gdp_ssh_username | Guardium SSH username | string | n/a | yes |
 | gdp_ssh_privatekeypath | Path to SSH private key | string | n/a | yes |
-| gdp_mu_host | Comma separated list of Guardium Managed Units | string | n/a | yes |
+| gdp_mu_host | Comma separated list of Guardium Managed Units | string | `""` | no |
+| udc_name | Name for universal connector | string | `"neptune-gdp"` | no |
 | enable_universal_connector | Whether to enable the universal connector | bool | `true` | no |
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |
 | codec_pattern | Codec pattern for the Universal Connector | string | `""` | no |
 | csv_event_filter | UDC Event filters | string | `""` | no |
 | neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | string | `""` | no |
+| cloudwatch_endpoint | Custom endpoint URL for AWS CloudWatch. Leave empty to use default AWS endpoint | string | `""` | no |
 | use_aws_bundled_ca | Whether to use the AWS bundled CA certificates for Neptune connection | bool | `true` | no |
-| profile_upload_directory | Directory path for SFTP upload (chroot path for CLI user) | string | `"/upload"` | no |
-| profile_api_directory | Full filesystem path for Guardium API to read CSV files | string | `"/var/IBM/Guardium/file-server/upload"` | no |
-| use_multipart_upload | Whether to use multipart upload for CSV files | bool | `false` | no |
+| use_multipart_upload | Whether to use multipart upload for CSV files | bool | `true` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| profile_csv | Universal Connector profile CSV |
 | udc_name | Name of the Universal Connector |
-| parameter_group_name | Name of the Neptune cluster parameter group |
 | cloudwatch_log_group | Name of the CloudWatch Log Group for audit logs |
+| parameter_group_name | Name of the Neptune cluster parameter group |
 | aws_region | AWS region where resources are deployed |
 | aws_account_id | AWS account ID |
 | neptune_cluster_identifier | Neptune cluster identifier |
