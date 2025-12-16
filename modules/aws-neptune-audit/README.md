@@ -146,7 +146,7 @@ Guardium is configured to collect and analyze these logs through the Universal C
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region | string | `"us-east-1"` | no |
 | neptune_cluster_identifier | Neptune cluster identifier to be monitored | string | n/a | yes |
-| tags | Map of tags to apply to resources | map(string) | `{}` | no |
+| tags | Map of tags to apply to resources | map(string) | n/a | yes |
 | udc_aws_credential | Name of AWS credential defined in Guardium | string | n/a | yes |
 | gdp_client_secret | Client secret from Guardium | string | n/a | yes |
 | gdp_client_id | Client ID from Guardium | string | n/a | yes |
@@ -156,7 +156,7 @@ Guardium is configured to collect and analyze these logs through the Universal C
 | gdp_password | Guardium password | string | n/a | yes |
 | gdp_ssh_username | Guardium SSH username | string | n/a | yes |
 | gdp_ssh_privatekeypath | Path to SSH private key | string | n/a | yes |
-| gdp_mu_host | Comma separated list of Guardium Managed Units | string | `""` | no |
+| gdp_mu_host | Comma separated list of Guardium Managed Units | string | n/a | yes |
 | enable_universal_connector | Whether to enable the universal connector | bool | `true` | no |
 | csv_start_position | Start position for UDC | string | `"end"` | no |
 | csv_interval | Polling interval for UDC | string | `"5"` | no |

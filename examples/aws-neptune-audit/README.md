@@ -131,7 +131,7 @@ Neptune audit logging captures:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | aws_region | AWS region where resources will be created | `string` | `"us-east-1"` | no |
-| neptune_cluster_identifier | Neptune cluster identifier to be monitored | `string` | n/a | yes |
+| neptune_cluster_identifier | Neptune cluster identifier to be monitored | `string` | `"guardium-neptune"` | no |
 | neptune_endpoint | Neptune cluster endpoint (optional - will be fetched automatically if not provided) | `string` | `""` | no |
 | udc_aws_credential | Name of AWS credential defined in Guardium | `string` | n/a | yes |
 | gdp_client_id | Client ID used when running grdapi register_oauth_client | `string` | n/a | yes |
@@ -142,7 +142,7 @@ Neptune audit logging captures:
 | gdp_password | Password of Guardium Web UI user | `string` | n/a | yes |
 | gdp_ssh_username | Guardium OS user with SSH access | `string` | n/a | yes |
 | gdp_ssh_privatekeypath | Private SSH key to connect to Guardium OS | `string` | n/a | yes |
-| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | `string` | n/a | yes |
+| gdp_mu_host | Comma separated list of Guardium Managed Units to deploy profile | `string` | `""` | no |
 | enable_universal_connector | Whether to enable the universal connector | `bool` | `true` | no |
 | csv_start_position | Start position for UDC | `string` | `"end"` | no |
 | csv_interval | Polling interval for UDC | `string` | `"5"` | no |
