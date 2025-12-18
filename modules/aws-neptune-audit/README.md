@@ -157,6 +157,7 @@ Guardium is configured to collect and analyze these logs through the Universal C
 
 | Name | Description |
 |------|-------------|
+
 | udc_name | Name of the Universal Connector |
 | cloudwatch_log_group | Name of the CloudWatch Log Group for audit logs |
 | parameter_group_name | Name of the Neptune cluster parameter group |
