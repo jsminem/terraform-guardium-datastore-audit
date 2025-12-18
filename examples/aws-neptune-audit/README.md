@@ -152,7 +152,6 @@ Neptune audit logging captures:
 
 | Name | Description |
 |------|-------------|
-| profile_csv | Content of the profile CSV |
 | udc_name | Name of the Universal Connector |
 | parameter_group_name | Name of the Neptune cluster parameter group |
 | cloudwatch_log_group | CloudWatch Log Group for audit logs |
