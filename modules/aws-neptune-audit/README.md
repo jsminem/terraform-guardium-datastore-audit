@@ -20,15 +20,17 @@ Before using this module, you need to:
 | aws | >= 4.0.0 |
 | guardium-data-protection | >= 1.0.0 |
 
+
 ### Parameter Group Import Process
 
-To ensure Terraform manages your Neptune cluster correctly when using a custom parameter group:
+This module uses the existing parameter group to enable Neptune audit logging.
+To ensure Terraform manages your Neptune cluster correctly:
 
 1. Initialize Terraform in your working directory:
    ```bash
    terraform init
    ```
-   
+
 2. Identify your current parameter group:
    ```bash
    aws neptune describe-db-clusters \
@@ -38,12 +40,12 @@ To ensure Terraform manages your Neptune cluster correctly when using a custom p
    --output text
    ```
 
-3. **If the output is a custom parameter group** (i.e., not `default.neptune` or similar default names), import it:
+3. Import your current parameter group:
    ```bash
    terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <your-parameter-group-name>
    ```
-   
-**Note**: Skipping the import step for custom parameter groups will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
+
+**Note**: Skipping the import step will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
 
 ## Features
 
