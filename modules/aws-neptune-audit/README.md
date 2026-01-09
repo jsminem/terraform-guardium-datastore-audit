@@ -24,8 +24,8 @@ Before using this module, you need to:
 
 This module automatically detects whether your Neptune cluster uses a default or custom parameter group:
 
-- **Default Parameter Group**: If your cluster uses the default parameter group (e.g., `default.neptune1`), the module creates a new custom parameter group
-- **Custom Parameter Group**: If your cluster already uses a custom parameter group, the module modifies it to enable audit logging
+- **Default Parameter Group**: If your cluster uses the default parameter group (e.g., `default.neptune1`), the module automatically creates a new custom parameter group with audit logging enabled
+- **Custom Parameter Group**: If your cluster already uses a custom parameter group, you must import it into Terraform state before applying. The module will then modify the existing parameter group to enable audit logging
 
 To ensure Terraform manages your Neptune cluster correctly when using a custom parameter group:
 
@@ -43,12 +43,15 @@ To ensure Terraform manages your Neptune cluster correctly when using a custom p
    --output text
    ```
 
-3. Import your current parameter group (only if it's a custom parameter group):
+3. **If the output is NOT a default parameter group** (i.e., not `default.neptune1` or similar), import it:
    ```bash
    terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <your-parameter-group-name>
    ```
 
-**Note**: Skipping the import step for custom parameter groups will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
+**Important**:
+- **For custom parameter groups**: You MUST import the existing parameter group before running `terraform apply`. This allows Terraform to manage it without recreating it.
+- **For default parameter groups**: No import needed - the module creates a new custom parameter group automatically.
+- The module uses lifecycle `ignore_changes` rules to prevent unwanted modifications to description and tags when managing imported parameter groups.
 
 ## Features
 
