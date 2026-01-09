@@ -74,8 +74,6 @@ Create a `terraform.tfvars` file with your configuration. See [terraform.tfvars.
 
 ### 3. Import the Neptune Parameter Group (if using custom parameter group)
 
-**Why this step is needed**: The module automatically detects if your Neptune cluster uses a default or custom parameter group. For custom parameter groups, Terraform needs to import the existing resource to manage it properly.
-
 Identify existing parameter group name:
 
   ```bash
@@ -92,11 +90,7 @@ Identify existing parameter group name:
    terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <your-parameter-group-name>
    ```
 
-**Important Notes**:
-- **Default parameter group** (e.g., `default.neptune1`): Skip this step. The module will automatically create a new custom parameter group with audit logging enabled.
-- **Custom parameter group**: You MUST import it before applying to avoid errors. The module will add the audit logging parameter to the existing parameter group.
-- The module uses lifecycle `ignore_changes` rules to prevent unwanted modifications to description and tags when managing imported custom parameter groups.
-- This approach matches the pattern used in MariaDB and MySQL modules for consistency.
+**Note**: Skipping the import step for custom parameter groups will cause Terraform to attempt creating a new parameter group, which may fail or cause unexpected behavior.
 
 ### 4. Apply the Configuration
 
