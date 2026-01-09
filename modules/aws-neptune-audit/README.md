@@ -23,8 +23,7 @@ Before using this module, you need to:
 
 ### Parameter Group Import Process
 
-This module uses the existing parameter group to enable Neptune audit logging.
-To ensure Terraform manages your Neptune cluster correctly:
+To ensure Terraform manages your Neptune cluster correctly when using a custom parameter group:
 
 1. Initialize Terraform in your working directory:
    ```bash
