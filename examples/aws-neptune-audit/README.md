@@ -85,8 +85,8 @@ Identify existing parameter group name:
     --output text
   ```
 
-**If the output is a custom parameter group** (i.e., not `default.neptune` or similar default names), import it:
-   ```bash
+Import existing parameter group (only if it's a custom parameter group):
+```bash
    terraform import module.datastore-audit_aws-neptune-audit.aws_neptune_cluster_parameter_group.guardium <your-parameter-group-name>
    ```
 
